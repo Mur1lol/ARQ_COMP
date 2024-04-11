@@ -1,0 +1,5 @@
+/GHDL
+/GTKWAVE
+/VHDL/*.cf
+/VHDL/*.ghw
+*.zip
