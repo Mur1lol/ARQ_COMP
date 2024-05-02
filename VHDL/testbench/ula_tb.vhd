@@ -14,10 +14,12 @@ architecture a_ula_tb of ula_tb is
             overflow, zero, negative   : out std_logic -- Flag para maior
         );
     end component;
+    
     signal entr0, entr1, saida      : unsigned(15 downto 0);
     signal sel                      : unsigned(1 downto 0);
     signal overflow, zero, negative : std_logic;
-begin
+
+    begin
     -- uut significa Unit Under Test
     uut : ula port map(
         sel => sel,
