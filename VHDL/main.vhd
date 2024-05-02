@@ -39,31 +39,37 @@ architecture a_main of main is
         );
     end component;
 
-    signal ula_result, reg_file_outputA, reg_file_outputB, mux_output  : unsigned(15 downto 0);            
+    signal ula_result, reg_file_outputA, reg_file_outputB, mux_output  : unsigned(15 downto 0);  
+    signal saida_extra : unsigned(15 downto 0);           
     
     begin
     banco_instance: banco
-    port map(   reg_selec_A     =>  reg_A,
-                reg_selec_B     =>  reg_B,
-                regWrite        =>  reg_Write,
-                entr            =>  ula_result,
-                wr_enable       =>  main_write_enable,
-                clk             =>  clk,
-                rst             =>  rst,
-                reg_dataA       =>  reg_file_outputA,
-                reg_dataB       =>  reg_file_outputB
+    port map(   
+        reg_selec_A     =>  reg_A,
+        reg_selec_B     =>  reg_B,
+        regWrite        =>  reg_Write,
+        entr            =>  ula_result,
+        wr_enable       =>  main_write_enable,
+        clk             =>  clk,
+        rst             =>  rst,
+        reg_dataA       =>  reg_file_outputA,
+        reg_dataB       =>  reg_file_outputB
     );
 
     ula_instance: ula 
-    port map(   sel     =>  ula_sel,
-                entr0   =>  reg_file_outputA,
-                entr1   =>  mux_output,
-                saida   =>  ula_result
+    port map(   
+        sel     =>  ula_sel,
+        entr0   =>  reg_file_outputA,
+        entr1   =>  mux_output,
+        saida   =>  ula_result
     );
 
-    mux_output <= reg_file_outputB when mux_entr_sel = '0' else
-                  main_entr        when mux_entr_sel = '1' else
-                  "0000000000000000"; 
+    mux_output <= 
+        reg_file_outputB when mux_entr_sel = '0' else
+        main_entr        when mux_entr_sel = '1' else
+        "0000000000000000"; 
+
+    saida_extra <= ula_result;
 
 end architecture;
     

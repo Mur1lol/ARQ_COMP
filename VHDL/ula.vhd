@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity ula is
     port (
-        sel                        : in unsigned(1 downto 0); -- Seletor de operações (soma, subtração, AND bit a bit e OR bit a bit)
+        sel                        : in  unsigned(1 downto 0); -- Seletor de operações (soma, subtração, AND bit a bit e OR bit a bit)
         entr0, entr1               : in  unsigned(15 downto 0); -- Entrada de 16 bits
         saida                      : out unsigned(15 downto 0); -- Saida 16 bits
         overflow, zero, negative   : out std_logic -- Flag para Overflow, Zero e negativo
