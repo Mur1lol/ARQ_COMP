@@ -4,13 +4,13 @@ use ieee.numeric_std.all;
 
 entity add1 is
     port( 
-        entrada  : in  unsigned(15 downto 0);
-        saida    : out unsigned(15 downto 0)
+        entrada  : in  unsigned(6 downto 0);
+        saida    : out unsigned(6 downto 0)
     );
 end entity;
 
 architecture a_add1 of add1 is
     begin 
-    saida <= entrada + "0000000000000001";
+    saida <= entrada + "0000001";
     
 end architecture;

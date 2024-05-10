@@ -2,15 +2,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity puc_tb is
+entity uc_tb is
 end;
 
-architecture a_puc_tb of puc_tb is
-    component puc
+architecture a_uc_tb of uc_tb is
+    component uc
         port( 
             clk, sel, wr_en    : in  std_logic;
-            data_in  : in  unsigned(15 downto 0);
-            data_out : out unsigned(15 downto 0)
+            data_in  : in  unsigned(6 downto 0);
+            data_out : out unsigned(11 downto 0)
         );
     end component;
 
@@ -18,11 +18,13 @@ architecture a_puc_tb of puc_tb is
     signal finished			: std_logic := '0';
     signal clk, wr_en, rst, sel	: std_logic;
     
-    signal data_in, data_out : unsigned(15 downto 0);
+    signal data_in : unsigned(6 downto 0);
+    signal data_out : unsigned(11 downto 0);
+    
 
     begin
     -- uut significa Unit Under Test
-    uut : puc port map(	
+    uut : uc port map(	
         clk      => clk,
         wr_en    => '1',
         sel      => sel,
@@ -58,20 +60,30 @@ architecture a_puc_tb of puc_tb is
 
     process
     begin
-        wait for 200 ns;
         sel <= '0';
-        data_in <= "0000000000000000";
-        wait for 100 ns;
-
+        data_in <= "0000000";
+        wait for 200 ns;
         sel <= '1';
+
+        wait for 100 ns;
+        
         
         wait;
     end process;
 end architecture;
 
--- ghdl  -a  puc.vhd
--- ghdl  -e  puc
--- ghdl  -a  puc_tb.vhd
--- ghdl  -e  puc_tb
--- ghdl  -r  puc_tb  --wave=puc_tb.ghw
--- gtkwave puc_tb.ghw
+-- ghdl  -a  pc.vhd
+-- ghdl  -e  pc
+
+-- ghdl  -a  add1.vhd
+-- ghdl  -e  add1
+
+-- ghdl  -a  maquina_estados.vhd
+-- ghdl  -e  maquina_estados
+
+-- ghdl  -a  uc.vhd
+-- ghdl  -e  uc
+-- ghdl  -a  uc_tb.vhd
+-- ghdl  -e  uc_tb
+-- ghdl  -r  uc_tb  --wave=uc_tb.ghw
+-- gtkwave uc_tb.ghw
