@@ -4,84 +4,138 @@ use ieee.numeric_std.all;
 
 entity uc is
     port( 
-        clk, sel, wr_en : in  std_logic;
-        data_in         : in  unsigned(6 downto 0);
-        data_out        : out unsigned(11 downto 0)
+        clk, rst        : in  std_logic;
+        instruction_in  : in  unsigned(11 downto 0);
+
+
+        -- PCWriteCond     : out
+        -- PCWrite         : out
+        -- IorD            : out
+        -- MemRead         : out
+        -- MemWrite        : out
+        -- MemtoReg        : out
+        -- IRWrite         : out
+
+        -- PCSource        : out
+        -- ALUOp           : out
+        -- ALUSrcB         : out
+        -- ALUSrcA         : out
+        -- RegWrite        : out
     );
 end entity;
 
 architecture a_uc of uc is
-    component pc is
-        port (  
-            clk      : in  std_logic;
-            wr_en    : in  std_logic;
-            data_in  : in  unsigned(6 downto 0);
-            data_out : out unsigned(6 downto 0)
-        );
-    end component;
-    
-    component add1 is
-        port(   
-            entrada  : in  unsigned(6 downto 0);
-            saida    : out unsigned(6 downto 0)
-        );
-    end component;
-
-    component rom is
-        port( 
-            clk      : in  std_logic;
-            endereco : in  unsigned(6 downto 0);
-            dado     : out unsigned(11 downto 0) 
-        );
-    end component;
-
     component maquina_estados is
         port( 
-            clk   : in  std_logic;
-            saida : out std_logic
+            clk, rst   : in  std_logic;
+            saida      : out unsigned (1 downto 0)
         );
     end component;
 
-    signal saida_pc, entrada_pc, saida_add1, saida_add1_extra  : unsigned(6 downto 0);  
-    signal saida_rom : unsigned(11 downto 0);
-    signal saida_maquina : std_logic;       
     
+    signal saida_maquina: unsigned(1 downto 0);
+    signal opcode       : unsigned(4 downto 0);
+
     begin
-    pc_instance: pc
-    port map(  
-        wr_en      =>  wr_en,
-        clk        =>  clk,
-        data_in    =>  entrada_pc,
-        data_out   =>  saida_pc
-    );
-
-    add1_instance: add1
-    port map(  
-        entrada   =>  saida_pc,
-        saida     =>  saida_add1
-    );
-
-    rom_instance: rom
-    port map( 
-        clk      => clk,
-        endereco => saida_pc,
-        dado     => saida_rom 
-    );
-
     maquina_estados_instance: maquina_estados
     port map( 
         clk   => clk,
+        rst   => rst,
         saida => saida_maquina
     );
 
-    saida_add1_extra <= 
-        saida_pc when saida_maquina='0' else
-        saida_add1;
+    opcode <= instruction_in(11 downto 8);
 
-    entrada_pc <= 
-        data_in when sel='0' else
-        saida_add1_extra;
+    jump_en <=  '1' when opcode="1111" else
+               '0';
 
-    data_out <= saida_rom;
+    process(saida_maquina, opcode)
+    begin
+    case opcode is
+        when "0000" => -- nop
+        case saida_maquina is
+            when "00" => -- Fetch
+                -- Registrador da instrucao
+                reg_instruction_wr_en <= '1';
 
+                --PC
+                pc_wr_en <= '1';
+                jump_en <= '0';
+                imm_address <= "0000000";
+
+                -- Banco de Registrador
+                register_file_wr_en <= '0';
+                reg_selec_A_uc <= "000";
+                reg_selec_B_uc <= "000";
+                reg_selec_write <= "000";
+        
+                -- Constante
+                immediate_in <= "000000";
+                reg_or_imm <= '0';
+
+                --ULA
+                sel_op_uc <= "00";
+
+            when "01" => -- Decode
+                -- Registrador da instrucao
+                reg_instruction_wr_en <= '0';
+
+                --PC
+                pc_wr_en <= '0';
+                jump_en <= '0';
+                imm_address <= "0000000";
+
+                -- Banco de Registrador
+                register_file_wr_en <= '0';
+                reg_selec_A_uc <= instruction_in(7 downto 5);
+                reg_selec_B_uc <= instruction_in(4 downto 2);
+                reg_selec_write <= "000";
+            
+                -- Constante
+                immediate_in <= "000000";
+                reg_or_imm <= '0';
+
+                --ULA
+                sel_op_uc <= "00"; 
+                
+            when "10" => -- Execute
+                -- Registrador da instrucao
+                reg_instruction_wr_en <= '0';
+
+                --PC
+                pc_wr_en <= '0';
+                jump_en <= '0';
+                imm_address <= "0000000";
+
+                -- Banco de Registrador
+                register_file_wr_en <= '1';
+                reg_selec_A_uc <= instruction_in(7 downto 5);
+                reg_selec_B_uc <= instruction_in(4 downto 2);
+                reg_selec_write <= instruction_in(10 downto 8);
+            
+                -- Constante
+                immediate_in <= "000000";
+                reg_or_imm <= '0';
+
+                --ULA
+                sel_op_uc <= "00"; -- soma 
+            when others =>
+        end case;
+
+        when "1111" => -- jump
+        case saida_maquina is
+            when "00" => -- Fetch
+            when "01" => -- Decode
+            when "10" => -- Execute
+            when others =>
+        end case;
+
+        when others =>
+        case saida_maquina is
+            when "00" => --Fetch
+            when "01" => --Fetch
+            when "10" => --Fetch
+            when others =>
+        end case;
+    end case;    
 end architecture;

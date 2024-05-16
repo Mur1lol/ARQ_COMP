@@ -33,8 +33,40 @@ architecture a_main of main is
         );
     end component;
 
-    signal ula_result, rs1_data, rs2_data, mux_output  : unsigned(15 downto 0);         
+    component pc is
+        port (  
+            clk      : in  std_logic;
+            wr_en    : in  std_logic;
+            data_in  : in  unsigned(6 downto 0);
+            data_out : out unsigned(6 downto 0)
+        );
+    end component;
     
+    component add1 is
+        port(   
+            entrada  : in  unsigned(6 downto 0);
+            saida    : out unsigned(6 downto 0)
+        );
+    end component;
+
+    component rom is
+        port( 
+            clk      : in  std_logic;
+            endereco : in  unsigned(6 downto 0);
+            dado     : out unsigned(11 downto 0) 
+        );
+    end component;
+
+    component uc is
+        port (
+
+        );
+    end component;
+
+    signal ula_result, rs1_data, rs2_data, mux_output  : unsigned(15 downto 0);         
+    signal saida_pc, entrada_pc, saida_add1  : unsigned(6 downto 0);  
+    signal saida_rom : unsigned(11 downto 0);
+
     begin
     banco_instance: banco
     port map(  
@@ -56,6 +88,36 @@ architecture a_main of main is
         entr1   =>  mux_output,
         saida   =>  ula_result
     );
+
+    pc_instance: pc
+    port map(  
+        wr_en      =>  wr_en,
+        clk        =>  clk,
+        data_in    =>  entrada_pc,
+        data_out   =>  saida_pc
+    );
+
+    add1_instance: add1
+    port map(  
+        entrada   =>  saida_pc,
+        saida     =>  saida_add1
+    );
+
+    rom_instance: rom
+    port map( 
+        clk      => clk,
+        endereco => saida_pc,
+        dado     => saida_rom 
+    );
+
+    uc_instance: uc
+    port map(
+
+    );
+
+    entrada_pc <= 
+        data_in when sel='0' else
+        saida_add1;
 
     mux_output <= 
         rs2_data   when mux_sel = '0' else
