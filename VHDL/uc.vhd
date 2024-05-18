@@ -5,22 +5,22 @@ use ieee.numeric_std.all;
 entity uc is
     port( 
         clk, rst        : in  std_logic;
-        instruction_in  : in  unsigned(11 downto 0);
+        instruction     : in  unsigned(15 downto 0);
 
+        -- Controle PC
+        pc_wr_en : out std_logic;
+        pc_sel : out std_logic := '0';
+        pc_data_in : unsigned(15 downto 0) := "0000000000000000";
 
-        -- PCWriteCond     : out
-        -- PCWrite         : out
-        -- IorD            : out
-        -- MemRead         : out
-        -- MemWrite        : out
-        -- MemtoReg        : out
-        -- IRWrite         : out
+        -- Controle ULA
+        ula_sel : out unsigned (1 downto 0);
 
-        -- PCSource        : out
-        -- ALUOp           : out
-        -- ALUSrcB         : out
-        -- ALUSrcA         : out
-        -- RegWrite        : out
+        -- Controle Banco
+        banco_rst : out std_logic;
+        banco_wr_en: out std_logic;
+        rs1, rs2, rd: out unsigned(2 downto 0);
+        imm: out unsigned (5 downto 0);
+        reg_or_imm: std_logic;
     );
 end entity;
 
@@ -44,10 +44,60 @@ architecture a_uc of uc is
         saida => saida_maquina
     );
 
-    opcode <= instruction_in(11 downto 8);
+    
 
-    jump_en <=  '1' when opcode="1111" else
-               '0';
+    -- Fetch
+    when saida_maquina="00"
+    pc_wr_en    <= '0';
+    pc_sel      <= '0';
+    banco_wr_en <= '0';
+
+    -- Decode
+    when saida_maquina="01"
+    opcode <= instruction(15 downto 12);
+    rd     <= instruction(11 downto 9);
+    rs1    <= instruction(8 downto 6);
+    rs2    <= instruction(5 downto 3);
+    imm    <= instruction(5 downto 0);
+
+    -- Execute
+    when saida_maquina="10"
+
+    -- NOP
+    when opcode="0000"
+    pc_wr_en='1';
+
+    -- ADD
+    when opcode="0001"
+    pc_wr_en='1';
+    banco_wr_en <= '1';
+    reg_or_imm <= '0'; -- REG
+    ula_sel <= "00"; -- SOMA
+
+    -- ADDI
+    when opcode="0010"
+    pc_wr_en='1';
+    banco_wr_en <= '1';
+    reg_or_imm <= '1'; -- IMM
+    ula_sel <= "00"; -- SOMA
+
+    -- SUB
+    when opcode="0101"
+
+    -- SUBI
+    when opcode="0110"
+
+    -- MOV
+    when opcode="1001"
+
+    -- MOVI
+    when opcode="1010"
+    
+    -- JUMP
+    when opcode="1111"
+    jump_en <=  '1';
+
+    
 
     process(saida_maquina, opcode)
     begin
