@@ -10,8 +10,8 @@ architecture a_pc_tb of pc_tb is
         port( 
             clk      : in  std_logic;
             wr_en    : in  std_logic;
-            data_in  : in  unsigned(15 downto 0);
-            data_out : out unsigned(15 downto 0)
+            data_in  : in  unsigned(6 downto 0);
+            data_out : out unsigned(6 downto 0)
         );
     end component;
 
@@ -19,7 +19,7 @@ architecture a_pc_tb of pc_tb is
     signal finished			: std_logic := '0';
     signal clk, wr_en, rst	: std_logic;
     
-    signal data_in, data_out : unsigned(15 downto 0);
+    signal data_in, data_out : unsigned(6 downto 0);
 
     begin
     -- uut significa Unit Under Test
@@ -60,37 +60,37 @@ architecture a_pc_tb of pc_tb is
     begin
         wait for 200 ns;
 
-        data_in <= "0000000000000000";
+        data_in <= "0000000";
         wait for 100 ns;
 
-        data_in <= "0000000000000001";
+        data_in <= "0000001";
         wait for 100 ns;
 
-        data_in <= "0000000000000010";
+        data_in <= "0000010";
         wait for 100 ns;
 
-        data_in <= "0000000000000011";
+        data_in <= "0000011";
         wait for 100 ns;
 
-        data_in <= "0000000000000100";
+        data_in <= "0000100";
         wait for 100 ns;
 
-        data_in <= "0000000000000101";
+        data_in <= "0000101";
         wait for 100 ns;
 
-        data_in <= "0000100000000010";
+        data_in <= "0000110";
         wait for 100 ns;
 
-        data_in <= "0000000000000111";
+        data_in <= "0000111";
         wait for 100 ns;
 
-        data_in <= "0000000000001000";
+        data_in <= "0001000";
         wait for 100 ns;
 
-        data_in <= "0000000000001001";
+        data_in <= "0001001";
         wait for 100 ns;
 
-        data_in <= "0000000000001010";
+        data_in <= "0001010";
         
         wait;
     end process;

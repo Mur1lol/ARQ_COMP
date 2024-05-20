@@ -11,6 +11,6 @@ end entity;
 
 architecture a_add1 of add1 is
     begin 
-    saida <= entrada + "0000001";
+    saida <= entrada + 1;
     
 end architecture;

@@ -12,7 +12,7 @@ entity pc is
 end entity;
 
 architecture a_pc of pc is
-    signal registro: unsigned(6 downto 0);
+    signal registro: unsigned(6 downto 0) := "0000000";
     
     begin
     process(clk, wr_en)  -- acionado se houver mudança em clk ou wr_en

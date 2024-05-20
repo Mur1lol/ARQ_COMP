@@ -1,27 +1,27 @@
 
-NOP        : 0000 000 000 000000  
+NOP  : 0000 000 000 000000  
 
 --------------------------------
 
-ADD REG REG: 0001 ddd aaa bbb xxx
+ADD  : 0001 ddd aaa bbb xxx
 
-ADD REG IMM: 0010 ddd aaa iiiiii
-
---------------------------------
-
-SUB REG REG: 0101 ddd aaa bbb xxx
-
-SUB REG IMM: 0110 ddd aaa iiiiii
+ADDI : 0010 ddd aaa iiiiii
 
 --------------------------------
 
-MOV REG REG: 1001 ddd aaa xxxxxx
+SUB  : 0101 ddd aaa bbb xxx
 
-MOV REG IMM: 1010 ddd xxx iiiiii
+SUBI : 0110 ddd aaa iiiiii
 
 --------------------------------
 
-JUMP IMM   : 1111 xxx xxx iiiiii 
+MOV  : 1001 ddd aaa xxxxxx
+
+MOVI : 1010 ddd xxx iiiiii
+
+--------------------------------
+
+JUMP : 1111 xxx xxx iiiiii 
 
 --------------------------------
 
