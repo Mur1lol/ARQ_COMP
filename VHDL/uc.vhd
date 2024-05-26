@@ -4,29 +4,36 @@ use ieee.numeric_std.all;
 
 entity uc is
     port( 
-        clk, rst      : in  std_logic;
+        clk, rst       : in  std_logic;
         
         -- Contrrole Instrução
-        instrucao     : in  unsigned(15 downto 0);
-        instr_wr_en   : out std_logic;
+        instrucao      : in  unsigned(15 downto 0);
+
+        -- WRITE ENABLE
+        pc_wr_en       : out std_logic;
+        banco_wr_en    : out std_logic;
+        acc_wr_en      : out std_logic;
+        instr_wr_en    : out std_logic;
+
+        -- RESET
+        banco_rst      : out std_logic := '0';
+        acc_rst        : out std_logic := '0';
 
         -- Controle PC
-        pc_wr_en      : out std_logic := '1';
-        pc_sel        : out std_logic := '0';
-        pc_data_in    : out unsigned(6 downto 0) := "0000000";
+        pc_data_in     : out unsigned (6 downto 0);
+        jump_or_branch : out unsigned (1 downto 0);
 
         -- Controle ULA
-        ula_sel       : out unsigned (1 downto 0);
-        imm           : out unsigned (15 downto 0);
-        reg_or_imm    : out std_logic;
+        ula_sel        : out unsigned (1 downto 0);
+        imm            : out unsigned (15 downto 0);
+        reg_or_imm     : out std_logic;
+        tipo_cmp       : out unsigned (2 downto 0);
 
         -- Controle Banco
-        banco_rst     : out std_logic;
-        banco_wr_en   : out std_logic;
-        rs1, rs2, rd  : out unsigned(2 downto 0);
+        rs2, rd        : out unsigned(3 downto 0);
 
         -- Controle Maquina Estados
-        estado        : out unsigned(1 downto 0)
+        estado         : out unsigned(1 downto 0)
     );
 end entity;
 
@@ -39,9 +46,10 @@ architecture a_uc of uc is
     end component;
 
     
-    signal saida_maquina : unsigned(1 downto 0);
-    signal opcode        : unsigned(3 downto 0);
-    signal jump_en       : std_logic;
+    signal saida_maquina : unsigned (1 downto 0);
+    signal opcode        : unsigned (4 downto 0);
+    signal j_or_b_signal : unsigned (1 downto 0);
+    signal rd_signal     : unsigned (3 downto 0);
 
     begin
     maquina_estados_instance: maquina_estados
@@ -57,31 +65,75 @@ architecture a_uc of uc is
     instr_wr_en <= '1' when saida_maquina="00" else '0';
 
     -- Decode
-    opcode      <= instrucao(15 downto 12) when saida_maquina="01";
-    jump_en       <= '1' when saida_maquina="01" AND opcode="1111" else '0';
-
-    pc_wr_en      <= '1' when saida_maquina="01" else '0'; -- Atualiza o PC na execução
-    pc_sel        <= '0' when saida_maquina="01" AND jump_en='1' else '1'; -- Seleciona a entrada de dados com endereço do jump
-    pc_data_in    <= "0" & instrucao(5 downto 0) when saida_maquina="01" AND jump_en='1' else "0000000";
-
+    opcode         <= instrucao(15 downto 11) when saida_maquina="01";
+    j_or_b_signal  <=
+        "01" when (opcode="11000" OR opcode="11001" OR opcode="11010" OR opcode="11011" OR opcode="11100") AND saida_maquina="01" else
+        "10" when (opcode="01000" OR opcode="01001" OR opcode="01010" OR opcode="01011" OR opcode="01100") AND saida_maquina="01" else
+        "00" when (opcode/="11000" AND opcode/="11001" AND opcode/="11010" AND opcode/="11011" AND opcode/="11100" AND 
+                opcode/="01000" AND opcode/="01001" AND opcode/="01010" AND opcode/="01011" AND opcode/="01100") AND 
+                saida_maquina="01";
+    pc_wr_en       <= '1' when saida_maquina="01" else '0'; -- Atualiza o PC na execução
+    pc_data_in     <= instrucao(6 downto 0) when saida_maquina="01"AND (j_or_b_signal="01" OR j_or_b_signal="10") else "0000000";
     
+    jump_or_branch <= j_or_b_signal;
+
+    tipo_cmp     <= 
+        "000" when saida_maquina="01" AND (opcode="01001" OR opcode="11001") else
+        "001" when saida_maquina="01" AND (opcode="01010" OR opcode="11010") else
+        "010" when saida_maquina="01" AND (opcode="01011" OR opcode="11011") else
+        "011" when saida_maquina="01" AND (opcode="01100" OR opcode="11100") else
+        "100" when saida_maquina="01" AND (opcode="01000" OR opcode="11000");
 
     -- Execute
-    rd          <= instrucao(11 downto  9) when saida_maquina="10" AND opcode/="1111" else "000";
-    rs1         <= instrucao(8  downto  6) when saida_maquina="10" AND opcode/="1010" AND opcode/="1111" else "000"; -- rs1 <= "000" when MOVI OR JUMP
-    rs2         <= instrucao(5  downto  3) when saida_maquina="10" AND opcode/="1001" AND (opcode="0001" OR opcode="0101") else "000"; -- rs2 <= "000" when MOV
-    imm         <= "0000000000" & instrucao(5  downto  0) when saida_maquina="10" else "0000000000000000";
+    rd_signal  <= 
+        instrucao(10 downto  7) when saida_maquina="10" AND 
+        (opcode="00001" OR opcode="00010" OR opcode="00011" OR 
+        opcode="00100" OR opcode="00101" OR opcode="00110" OR opcode="00111");
+
+    rd <= rd_signal;
     
+    rs2 <= 
+        instrucao(6  downto  3) when saida_maquina="10" AND 
+        (opcode="00010" OR opcode="00011" OR 
+        opcode="00100" OR opcode="00110");
+
+    imm <= 
+        (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND
+        (opcode="00001" OR opcode="00101" OR opcode="00111");
+    
+    banco_wr_en   <= 
+        '1' when saida_maquina="10" AND rd_signal /= "1111" AND 
+        (opcode="00010" OR opcode="00011" OR opcode="00100") else 
+        '0';
+
+    acc_wr_en     <= 
+        '1' when saida_maquina="10" AND rd_signal = "1111" AND 
+        (opcode="00001" OR opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00101") else 
+        '0';
+
     -- Controle ULA
     ula_sel       <=
-        "00" when saida_maquina="10" AND (opcode="0001" OR opcode="0010" OR opcode="1001" OR opcode="1010") else
-        "01" when saida_maquina="10" AND (opcode="0101" OR opcode="0110") else
-        "00";
+        -- ADD OR ADDI
+        "00" when saida_maquina="10" AND 
+        (opcode="00100" OR opcode="00101") else 
+        -- SUB
+        "01" when saida_maquina="10" AND 
+        (opcode="00011") else 
+        -- LD
+        "10" when saida_maquina="10" AND 
+        (opcode="00001" OR (opcode="00010" AND rd_signal = "1111")) else 
+        -- MOV
+        "11" when saida_maquina="10" AND 
+        (opcode="00010");
 
     reg_or_imm    <=
-        '1' when saida_maquina="10" AND (opcode="0010" OR opcode="0110" OR opcode="1010" OR opcode="0010") else -- Imediato
-        '0' ;-- Registrador
+        -- Imediato
+        '1' when saida_maquina="01" AND 
+        (opcode="00001" OR opcode="00101" OR opcode="00111") else 
+        -- Registrador
+        '0' when saida_maquina="01" AND 
+        (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00110");
 
-    -- Controle Banco
-    banco_wr_en   <= '1' when saida_maquina="10" AND (opcode/="0000" AND opcode/="1111") else '0';
+    
+    
 end architecture;

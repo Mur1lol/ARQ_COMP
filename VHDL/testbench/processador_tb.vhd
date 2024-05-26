@@ -10,12 +10,12 @@ architecture a_processador_tb of processador_tb is
         port(    
             clk, rst   : in  std_logic;
             estado     : out unsigned (1 downto 0);
-            PC_out     : out unsigned (6 downto 0);
+            saida_PC     : out unsigned (6 downto 0);
             reg_instr  : out unsigned (15 downto 0);
-            rs1_out    : out unsigned (15 downto 0);
-            rs2_out    : out unsigned (15 downto 0);
-            acc        : out unsigned (15 downto 0);
-            ula_out    : out unsigned (15 downto 0)
+            saida_rs1    : out unsigned (15 downto 0);
+            saida_rs2    : out unsigned (15 downto 0);
+            saida_acc        : out unsigned (15 downto 0);
+            saida_ula    : out unsigned (15 downto 0)
         );
     end component;
 
@@ -39,7 +39,7 @@ architecture a_processador_tb of processador_tb is
 
     sim_time_proc: process
     begin
-        wait for 10 us;
+        wait for 56000 ns;
         finished <= '1';	
         wait;
     end process sim_time_proc;

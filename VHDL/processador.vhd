@@ -6,12 +6,12 @@ entity processador is
     port (  
         clk, rst   : in  std_logic;
         estado     : out unsigned (1 downto 0);
-        PC_out     : out unsigned (6 downto 0);
+        saida_PC     : out unsigned (6 downto 0);
         reg_instr  : out unsigned (15 downto 0);
-        rs1_out    : out unsigned (15 downto 0);
-        rs2_out    : out unsigned (15 downto 0);
-        acc        : out unsigned (15 downto 0);
-        ula_out    : out unsigned (15 downto 0)
+        saida_rs1    : out unsigned (15 downto 0);
+        saida_rs2    : out unsigned (15 downto 0);
+        saida_acc        : out unsigned (15 downto 0);
+        saida_ula    : out unsigned (15 downto 0)
     );
 end entity;
 
@@ -26,10 +26,11 @@ architecture a_processador of processador is
         );
     end component;
 
-    component add1 is
+    component somador is
         port(   
-            entrada  : in  unsigned(6 downto 0);
-            saida    : out unsigned(6 downto 0)
+            entr0   : in  unsigned(6 downto 0);
+            entr1   : in  unsigned(6 downto 0);
+            saida   : out unsigned(6 downto 0)
         );
     end component;
 
@@ -52,7 +53,7 @@ architecture a_processador of processador is
     component banco is
         port (  
             clk, rst, wr_en      : in  std_logic;
-            rs1, rs2, rd         : in  unsigned(2 downto 0);
+            rs1, rs2, rd         : in  unsigned(3 downto 0);
             entr                 : in  unsigned(15 downto 0); -- dado de entrada a ser escrito 
             rs1_data, rs2_data   : out unsigned(15 downto 0)
         );
@@ -60,87 +61,132 @@ architecture a_processador of processador is
 
     component uc is
         port( 
-            clk, rst      : in  std_logic;
-            
-            -- Contrrole Instrução
-            instrucao     : in  unsigned(15 downto 0);
-            instr_wr_en   : out std_logic;
+            clk, rst       : in  std_logic;
+            instrucao      : in  unsigned(15 downto 0);
+
+            -- WRITE ENABLE
+            pc_wr_en       : out std_logic;
+            banco_wr_en    : out std_logic;
+            acc_wr_en      : out std_logic;
+            instr_wr_en    : out std_logic;
+
+            -- RESET
+            banco_rst      : out std_logic := '0';
+            acc_rst        : out std_logic := '0';
 
             -- Controle PC
-            pc_wr_en      : out std_logic;
-            pc_sel        : out std_logic := '0';
-            pc_data_in    : out unsigned(6 downto 0) := "0000000";
+            pc_data_in     : out unsigned (6 downto 0);
+            jump_or_branch : out unsigned (1 downto 0);
 
             -- Controle ULA
-            ula_sel       : out unsigned (1 downto 0);
-            imm           : out unsigned (15 downto 0);
-            reg_or_imm    : out std_logic;
+            ula_sel        : out unsigned (1 downto 0);
+            imm            : out unsigned (15 downto 0);
+            reg_or_imm     : out std_logic;
+            tipo_cmp       : out unsigned (2 downto 0);
 
             -- Controle Banco
-            banco_rst     : out std_logic;
-            banco_wr_en   : out std_logic;
-            rs1, rs2, rd  : out unsigned(2 downto 0);
+            rs2, rd        : out unsigned (3 downto 0);
 
             -- Controle Maquina Estados
-            estado        : out unsigned(1 downto 0)
+            estado         : out unsigned (1 downto 0)
         );
     end component;
     
     component ula is
         port(   
-            sel                        : in  unsigned(1 downto 0); -- Seletor de operações (soma, subtração, AND bit a bit e OR bit a bit)
-            entr0, entr1               : in  unsigned(15 downto 0); -- Entrada de 16 bits
-            saida                      : out unsigned(15 downto 0); -- Saida 16 bits
-            overflow, zero, negative   : out std_logic -- Flag para Overflow, Zero e negativo
+            sel                   : in  unsigned(1 downto 0); -- Seletor de operações (soma, subtração, load e OR bit a bit)
+            entr0, entr1          : in  unsigned(15 downto 0); -- Entrada de 16 bits
+            saida                 : out unsigned(15 downto 0); -- Saida 16 bits
+            carry, overflow       : out std_logic; -- Flag para Carry e Overflow 
+            zero, negative        : out std_logic; -- Flag para Zero e negativo
+            menor, maior, igual   : out std_logic  -- Flag para Menor e Maior
         );
     end component;
 
-    signal ula_result, rs1_data, rs2_data, mux_output  : unsigned(15 downto 0);         
-    signal saida_pc, entrada_pc, saida_add1  : unsigned(6 downto 0);  
-    signal saida_rom : unsigned(15 downto 0);
+    ------------------------------------------------------------------------------
 
-    signal instrucao_out : unsigned (15 downto 0);
+    -- WRITE ENABLE
+    signal pc_wr_en       : std_logic;
+    signal banco_wr_en    : std_logic;
+    signal acc_wr_en      : std_logic;
+    signal instr_wr_en    : std_logic;
 
-    signal instr_wr_en   : std_logic;
+    -- RESET
+    signal banco_rst      : std_logic;
+    signal acc_rst        : std_logic;
 
-    -- Controle PC
-    signal pc_wr_en      : std_logic := '1';
-    signal pc_sel_out        : std_logic := '0';
-    signal pc_data_in    : unsigned(6 downto 0) := "0000000";
+    -- PC
+    signal pc_out         : unsigned (6 downto 0);
+    signal mux_pc         : unsigned (6 downto 0);
+    signal mux_somador    : unsigned (6 downto 0);
+    signal pc_sel         : std_logic;
+    signal add1_out       : unsigned (6 downto 0); 
+    signal somador_out    : unsigned (6 downto 0);
 
-    -- Controle ULA
-    signal ula_sel       : unsigned (1 downto 0);
-    signal imm           : unsigned (15 downto 0);
-    signal reg_or_imm    : std_logic;
+    -- ROM
+    signal rom_out        : unsigned (15 downto 0);
+    
+    -- INSTRUÇÂO
+    signal instrucao_out  : unsigned (15 downto 0);
 
-    -- Controle Banco
-    signal banco_rst     : std_logic;
-    signal banco_wr_en   : std_logic;
-    signal rs1_saida, rs2_saida, rd_saida  : unsigned(2 downto 0);
+    -- UC
+    signal reg_or_imm     : std_logic;
+    signal imm            : unsigned (15 downto 0);
+    signal rs2_out        : unsigned (3 downto 0);
+    signal rd_out         : unsigned (3 downto 0);
+    signal pc_data_in     : unsigned (6 downto 0);
+    signal ula_sel        : unsigned (1 downto 0);
+    signal j_or_b         : unsigned (1 downto 0);
+    signal estado_out     : unsigned (1 downto 0);
+    signal tipo_cmp       : unsigned (2 downto 0); 
 
-    -- Controle Maquina Estados
-   signal estado_out     : unsigned(1 downto 0);
+    -- BANCO
+    signal rs1_data       : unsigned (15 downto 0); 
+    signal rs2_data       : unsigned (15 downto 0); 
+
+    -- ULA
+    signal ula_out        : unsigned (15 downto 0);
+    signal mux_ula        : unsigned (15 downto 0);
+    signal menor_out      : std_logic; 
+    signal maior_out      : std_logic; 
+    signal igual_out      : std_logic; 
+    signal zero_out       : std_logic; 
+    signal negative_out   : std_logic; 
+    signal carry_out      : std_logic; 
+    signal overflow_out   : std_logic; 
+
+    -- ACC
+    signal acc_out        : unsigned (15 downto 0);
+    ------------------------------------------------------------------------------
 
     begin
     pc_instance: pc
     port map(  
-        wr_en      =>  pc_wr_en,
         clk        =>  clk,
-        data_in    =>  entrada_pc,
-        data_out   =>  saida_pc
+        wr_en      =>  pc_wr_en,
+        data_in    =>  mux_pc,
+        data_out   =>  pc_out
     );
 
-    add1_instance: add1
+    add1_instance: somador
     port map(  
-        entrada   =>  saida_pc,
-        saida     =>  saida_add1
+        entr0   =>  pc_out,
+        entr1   => "0000001",
+        saida   =>  add1_out
+    );
+
+    somador_instance: somador
+    port map(  
+        entr0   =>  pc_data_in,
+        entr1   =>  mux_somador,
+        saida   =>  somador_out
     );
 
     rom_instance: rom
     port map( 
         clk      => clk,
-        endereco => saida_pc,
-        dado     => saida_rom 
+        endereco => pc_out,
+        dado     => rom_out 
     );
 
     instr_instance: reg16bits
@@ -148,49 +194,62 @@ architecture a_processador of processador is
         clk      => clk,
         rst      => rst,
         wr_en    => instr_wr_en,
-        data_in  => saida_rom,        
+        data_in  => rom_out,        
         data_out => instrucao_out
     );
 
     uc_instance: uc
     port map(
-        clk => clk, 
-        rst => rst,
-            
-        -- Controle Instrução
-        instrucao     => instrucao_out,
-        instr_wr_en   => instr_wr_en,
+        clk     => clk, 
+        rst     => rst,       
+        instrucao => instrucao_out,     
+
+        -- WRITE ENABLE
+        pc_wr_en => pc_wr_en,      
+        banco_wr_en  =>  banco_wr_en,
+        acc_wr_en =>  acc_wr_en,     
+        instr_wr_en => instr_wr_en,   
+
+        -- RESET
+        banco_rst  =>  banco_rst,   
+        acc_rst => acc_rst,   
 
         -- Controle PC
-        pc_wr_en      => pc_wr_en,
-        pc_sel        => pc_sel_out,
-        pc_data_in    => pc_data_in,
+        pc_data_in  => pc_data_in,   
+        jump_or_branch => j_or_b,
 
         -- Controle ULA
-        ula_sel       => ula_sel,
-        imm           => imm,
-        reg_or_imm    => reg_or_imm,
+        ula_sel => ula_sel,        
+        imm =>  imm,          
+        reg_or_imm => reg_or_imm,
+        tipo_cmp => tipo_cmp,     
 
         -- Controle Banco
-        banco_rst     => banco_rst,
-        banco_wr_en   => banco_wr_en,
-        rs1           => rs1_saida, 
-        rs2           => rs2_saida, 
-        rd            => rd_saida,
+        rs2 => rs2_out, 
+        rd  => rd_out,      
 
         -- Controle Maquina Estados
-        estado        => estado_out
+        estado  => estado_out       
+    );
+
+    acc_instance: reg16bits
+    port map( 
+        clk      => clk,
+        rst      => acc_rst,
+        wr_en    => acc_wr_en,
+        data_in  => ula_out,        
+        data_out => acc_out
     );
 
     banco_instance: banco
     port map(  
-        wr_en      =>  banco_wr_en,
         clk        =>  clk,
+        wr_en      =>  banco_wr_en,
         rst        =>  banco_rst, 
-        rs1        =>  rs1_saida,
-        rs2        =>  rs2_saida,
-        rd         =>  rd_saida,
-        entr       =>  ula_result,
+        rs1        =>  "0000",
+        rs2        =>  rs2_out,
+        rd         =>  rd_out,
+        entr       =>  ula_out,
         rs1_data   =>  rs1_data,
         rs2_data   =>  rs2_data
     );
@@ -198,26 +257,48 @@ architecture a_processador of processador is
     ula_instance: ula 
     port map(   
         sel     =>  ula_sel,
-        entr0   =>  rs1_data,
-        entr1   =>  mux_output,
-        saida   =>  ula_result
+        entr0   =>  acc_out,
+        entr1   =>  mux_ula,
+        saida   =>  ula_out,
+        carry   => carry_out,
+        overflow => overflow_out, 
+        zero => zero_out, 
+        negative => negative_out,
+        menor => menor_out, 
+        maior => maior_out, 
+        igual => igual_out
     );
 
-    entrada_pc <= 
-        pc_data_in when pc_sel_out='0' else
-        saida_add1;
+    mux_somador <=
+        pc_out when j_or_b="01" else
+        "0000000";
 
-    mux_output <= 
+    pc_sel <= 
+        '1' when (j_or_b="01" OR j_or_b="10") AND
+                 (
+                    (tipo_cmp = "000" AND menor_out='1') OR
+                    (tipo_cmp = "001" AND maior_out='1') OR
+                    (tipo_cmp = "010" AND igual_out='1') OR
+                    (tipo_cmp = "011" AND igual_out='0') OR
+                    (tipo_cmp = "100")
+                 ) else
+        '0';
+
+    mux_pc <= 
+        add1_out when pc_sel='0' else
+        somador_out;
+
+    mux_ula <= 
         rs2_data   when reg_or_imm = '0' else
         imm        when reg_or_imm = '1' else
         "0000000000000000"; 
 
     estado     <= estado_out;
-    PC_out     <= saida_pc;
+    saida_pc   <= pc_out;
     reg_instr  <= instrucao_out;
-    rs1_out    <= rs1_data;
-    rs2_out    <= rs2_data;
-    acc        <= "0000000000000000";
-    ula_out    <= ula_result;
+    saida_rs1  <= rs1_data;
+    saida_rs2  <= rs2_data;
+    saida_acc  <= acc_out;
+    saida_ula  <= ula_out;
 
 end architecture;

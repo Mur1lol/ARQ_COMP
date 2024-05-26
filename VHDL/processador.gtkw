@@ -1,0 +1,77 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Sun May 26 14:09:53 2024
+[*]
+[dumpfile] "D:\ARQ_COMP\VHDL\processador_tb.ghw"
+[dumpfile_mtime] "Sun May 26 13:44:46 2024"
+[dumpfile_size] 58518
+[savefile] "D:\ARQ_COMP\VHDL\processador.gtkw"
+[timestart] 52658000000
+[size] 1920 1017
+[pos] -61 -61
+*-28.780333 54852000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.processador_tb.
+[treeopen] top.processador_tb.uut.
+[treeopen] top.processador_tb.uut.acc_instance.
+[treeopen] top.processador_tb.uut.uc_instance.
+[sst_width] 197
+[signals_width] 182
+[sst_expanded] 1
+[sst_vpaned_height] 300
+@28
+#{top.processador_tb.uut.estado[1:0]} top.processador_tb.uut.estado[1] top.processador_tb.uut.estado[0]
+@200
+-
+-PC
+@28
+top.processador_tb.uut.pc_wr_en
+@22
+#{top.processador_tb.uut.saida_pc[6:0]} top.processador_tb.uut.saida_pc[6] top.processador_tb.uut.saida_pc[5] top.processador_tb.uut.saida_pc[4] top.processador_tb.uut.saida_pc[3] top.processador_tb.uut.saida_pc[2] top.processador_tb.uut.saida_pc[1] top.processador_tb.uut.saida_pc[0]
+@200
+-
+-INSTRUCAO
+@28
+top.processador_tb.uut.instr_wr_en
+@22
+#{top.processador_tb.uut.reg_instr[15:0]} top.processador_tb.uut.reg_instr[15] top.processador_tb.uut.reg_instr[14] top.processador_tb.uut.reg_instr[13] top.processador_tb.uut.reg_instr[12] top.processador_tb.uut.reg_instr[11] top.processador_tb.uut.reg_instr[10] top.processador_tb.uut.reg_instr[9] top.processador_tb.uut.reg_instr[8] top.processador_tb.uut.reg_instr[7] top.processador_tb.uut.reg_instr[6] top.processador_tb.uut.reg_instr[5] top.processador_tb.uut.reg_instr[4] top.processador_tb.uut.reg_instr[3] top.processador_tb.uut.reg_instr[2] top.processador_tb.uut.reg_instr[1] top.processador_tb.uut.reg_instr[0]
+@200
+-
+-ULA
+@22
+#{top.processador_tb.uut.saida_ula[15:0]} top.processador_tb.uut.saida_ula[15] top.processador_tb.uut.saida_ula[14] top.processador_tb.uut.saida_ula[13] top.processador_tb.uut.saida_ula[12] top.processador_tb.uut.saida_ula[11] top.processador_tb.uut.saida_ula[10] top.processador_tb.uut.saida_ula[9] top.processador_tb.uut.saida_ula[8] top.processador_tb.uut.saida_ula[7] top.processador_tb.uut.saida_ula[6] top.processador_tb.uut.saida_ula[5] top.processador_tb.uut.saida_ula[4] top.processador_tb.uut.saida_ula[3] top.processador_tb.uut.saida_ula[2] top.processador_tb.uut.saida_ula[1] top.processador_tb.uut.saida_ula[0]
+#{top.processador_tb.uut.saida_acc[15:0]} top.processador_tb.uut.saida_acc[15] top.processador_tb.uut.saida_acc[14] top.processador_tb.uut.saida_acc[13] top.processador_tb.uut.saida_acc[12] top.processador_tb.uut.saida_acc[11] top.processador_tb.uut.saida_acc[10] top.processador_tb.uut.saida_acc[9] top.processador_tb.uut.saida_acc[8] top.processador_tb.uut.saida_acc[7] top.processador_tb.uut.saida_acc[6] top.processador_tb.uut.saida_acc[5] top.processador_tb.uut.saida_acc[4] top.processador_tb.uut.saida_acc[3] top.processador_tb.uut.saida_acc[2] top.processador_tb.uut.saida_acc[1] top.processador_tb.uut.saida_acc[0]
+#{top.processador_tb.uut.saida_rs2[15:0]} top.processador_tb.uut.saida_rs2[15] top.processador_tb.uut.saida_rs2[14] top.processador_tb.uut.saida_rs2[13] top.processador_tb.uut.saida_rs2[12] top.processador_tb.uut.saida_rs2[11] top.processador_tb.uut.saida_rs2[10] top.processador_tb.uut.saida_rs2[9] top.processador_tb.uut.saida_rs2[8] top.processador_tb.uut.saida_rs2[7] top.processador_tb.uut.saida_rs2[6] top.processador_tb.uut.saida_rs2[5] top.processador_tb.uut.saida_rs2[4] top.processador_tb.uut.saida_rs2[3] top.processador_tb.uut.saida_rs2[2] top.processador_tb.uut.saida_rs2[1] top.processador_tb.uut.saida_rs2[0]
+@200
+-
+-ACC
+@28
+top.processador_tb.uut.acc_wr_en
+@22
+#{top.processador_tb.uut.acc_instance.registro[15:0]} top.processador_tb.uut.acc_instance.registro[15] top.processador_tb.uut.acc_instance.registro[14] top.processador_tb.uut.acc_instance.registro[13] top.processador_tb.uut.acc_instance.registro[12] top.processador_tb.uut.acc_instance.registro[11] top.processador_tb.uut.acc_instance.registro[10] top.processador_tb.uut.acc_instance.registro[9] top.processador_tb.uut.acc_instance.registro[8] top.processador_tb.uut.acc_instance.registro[7] top.processador_tb.uut.acc_instance.registro[6] top.processador_tb.uut.acc_instance.registro[5] top.processador_tb.uut.acc_instance.registro[4] top.processador_tb.uut.acc_instance.registro[3] top.processador_tb.uut.acc_instance.registro[2] top.processador_tb.uut.acc_instance.registro[1] top.processador_tb.uut.acc_instance.registro[0]
+@200
+-
+-R3, R4, R5
+@28
+top.processador_tb.uut.banco_wr_en
+@22
+#{top.processador_tb.uut.banco_instance.x3.registro[15:0]} top.processador_tb.uut.banco_instance.x3.registro[15] top.processador_tb.uut.banco_instance.x3.registro[14] top.processador_tb.uut.banco_instance.x3.registro[13] top.processador_tb.uut.banco_instance.x3.registro[12] top.processador_tb.uut.banco_instance.x3.registro[11] top.processador_tb.uut.banco_instance.x3.registro[10] top.processador_tb.uut.banco_instance.x3.registro[9] top.processador_tb.uut.banco_instance.x3.registro[8] top.processador_tb.uut.banco_instance.x3.registro[7] top.processador_tb.uut.banco_instance.x3.registro[6] top.processador_tb.uut.banco_instance.x3.registro[5] top.processador_tb.uut.banco_instance.x3.registro[4] top.processador_tb.uut.banco_instance.x3.registro[3] top.processador_tb.uut.banco_instance.x3.registro[2] top.processador_tb.uut.banco_instance.x3.registro[1] top.processador_tb.uut.banco_instance.x3.registro[0]
+#{top.processador_tb.uut.banco_instance.x4.registro[15:0]} top.processador_tb.uut.banco_instance.x4.registro[15] top.processador_tb.uut.banco_instance.x4.registro[14] top.processador_tb.uut.banco_instance.x4.registro[13] top.processador_tb.uut.banco_instance.x4.registro[12] top.processador_tb.uut.banco_instance.x4.registro[11] top.processador_tb.uut.banco_instance.x4.registro[10] top.processador_tb.uut.banco_instance.x4.registro[9] top.processador_tb.uut.banco_instance.x4.registro[8] top.processador_tb.uut.banco_instance.x4.registro[7] top.processador_tb.uut.banco_instance.x4.registro[6] top.processador_tb.uut.banco_instance.x4.registro[5] top.processador_tb.uut.banco_instance.x4.registro[4] top.processador_tb.uut.banco_instance.x4.registro[3] top.processador_tb.uut.banco_instance.x4.registro[2] top.processador_tb.uut.banco_instance.x4.registro[1] top.processador_tb.uut.banco_instance.x4.registro[0]
+#{top.processador_tb.uut.banco_instance.x5.registro[15:0]} top.processador_tb.uut.banco_instance.x5.registro[15] top.processador_tb.uut.banco_instance.x5.registro[14] top.processador_tb.uut.banco_instance.x5.registro[13] top.processador_tb.uut.banco_instance.x5.registro[12] top.processador_tb.uut.banco_instance.x5.registro[11] top.processador_tb.uut.banco_instance.x5.registro[10] top.processador_tb.uut.banco_instance.x5.registro[9] top.processador_tb.uut.banco_instance.x5.registro[8] top.processador_tb.uut.banco_instance.x5.registro[7] top.processador_tb.uut.banco_instance.x5.registro[6] top.processador_tb.uut.banco_instance.x5.registro[5] top.processador_tb.uut.banco_instance.x5.registro[4] top.processador_tb.uut.banco_instance.x5.registro[3] top.processador_tb.uut.banco_instance.x5.registro[2] top.processador_tb.uut.banco_instance.x5.registro[1] top.processador_tb.uut.banco_instance.x5.registro[0]
+@200
+-
+-FLAGS
+@28
+top.processador_tb.uut.menor_out
+top.processador_tb.uut.maior_out
+top.processador_tb.uut.igual_out
+top.processador_tb.uut.zero_out
+top.processador_tb.uut.negative_out
+top.processador_tb.uut.carry_out
+top.processador_tb.uut.overflow_out
+@200
+-
+@28
+#{top.processador_tb.uut.uc_instance.jump_or_branch[1:0]} top.processador_tb.uut.uc_instance.jump_or_branch[1] top.processador_tb.uut.uc_instance.jump_or_branch[0]
+[pattern_trace] 1
+[pattern_trace] 0

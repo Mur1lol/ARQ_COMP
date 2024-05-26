@@ -2,7 +2,8 @@
 
 # Compilar os arquivos VHDL
 ghdl -a pc.vhd
-ghdl -a add1.vhd
+ghdl -a maquina_estados.vhd
+ghdl -a somador.vhd
 ghdl -a rom.vhd
 ghdl -a reg16bits.vhd
 ghdl -a uc.vhd
@@ -13,7 +14,8 @@ ghdl -a processador_tb.vhd
 
 # Elaborar as entidades
 ghdl -e pc
-ghdl -e add1
+ghdl -e maquina_estados
+ghdl -e somador
 ghdl -e rom
 ghdl -e reg16bits
 ghdl -e uc

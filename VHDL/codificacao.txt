@@ -1,34 +1,31 @@
-
-NOP  : 0000 000 000 000000  
-
---------------------------------
-
-ADD  : 0001 ddd aaa bbb xxx
-
-ADDI : 0010 ddd aaa iiiiii
-
---------------------------------
-
-SUB  : 0101 ddd aaa bbb xxx
-
-SUBI : 0110 ddd aaa iiiiii
-
---------------------------------
-
-MOV  : 1001 ddd aaa xxxxxx
-
-MOVI : 1010 ddd xxx iiiiii
-
---------------------------------
-
-JUMP : 1111 xxx xxx iiiiii 
-
---------------------------------
-
-ddd 	: Registrador Destino
-aaa 	: Registrador A
-bbb 	: Registrador B
-iiiiii 	: Constante Imediata
-x   	: Void
-
-
+/-------------------------------------------\  /-----------------------------------------\
+| COMANDOS ASSEMBLY |        BINARIO        |  |                                         |
+|-------------------|-----------------------|  |-----------------------------------------|
+| NOP               |  00000_0000_0000_000  |  | dddd 	 : Registrador Destino           |
+|-------------------|-----------------------|  | ssss 	 : Registrador Fonte             |
+| LD   | acc | imm  |  00001_1111__ccccccc  |  | ccccccc : Constante em Complemento de 2 | 
+|-------------------------------------------|  |                                         |
+| MOV  | acc | reg  |  00010_dddd_ssss_xxx  |  | x   	 : Void                          |
+|-------------------|-----------------------|  \-----------------------------------------/ 
+| SUB  | acc | reg  |  00011_dddd_ssss_xxx  |  
+|-------------------------------------------|  /-----------------------------------------\
+| ADD  | acc | reg  |  00100_dddd_ssss_xxx  |  |               REGISTRADORES             |
+| ADDI | acc | imm  |  00101_1111__ccccccc  |  |-----------------------------------------|
+|-------------------------------------------|  | x0 : 0000          | x5 : 0100          |
+| CMP  | acc | reg  |  00110_dddd_ssss_xxx  |  | x1 : 0001          | x6 : 0101          |
+| CMPI | acc | imm  |  00111_1111__ccccccc  |  | x2 : 0010          | x7 : 0110          |
+|-------------------------------------------|  | x3 : 0011          | x8 : 0111          |
+| JUMP (ABSOLUTO)   |                       |  |-----------------------------------------|
+| JMP  | imm        |  01000_xxxx__ccccccc  |  | acc: 1111                               |
+| JLT  | imm        |  01001_xxxx__ccccccc  |  \-----------------------------------------/
+| JGT  | imm        |  01010_xxxx__ccccccc  |  
+| JNE  | imm        |  01011_xxxx__ccccccc  |   
+| JEQ  | imm        |  01100_xxxx__ccccccc  |   
+|-------------------------------------------|  
+| BRANCH (RELATIVO) |                       |
+| BR   | imm        |  11000_xxxx__ccccccc  |
+| BLT  | imm        |  11001_xxxx__ccccccc  |
+| BGT  | imm        |  11010_xxxx__ccccccc  |
+| BNE  | imm        |  11011_xxxx__ccccccc  |
+| BEQ  | imm        |  11100_xxxx__ccccccc  |
+\-------------------------------------------/

@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity banco is
     port ( 
         clk, rst, wr_en      : in  std_logic;    
-        rs1, rs2, rd         : in  unsigned(2 downto 0); -- registrador 1, registrador 2, registrador Destino
+        rs1, rs2, rd         : in  unsigned(3 downto 0); -- registrador 1, registrador 2, registrador Destino
         entr                 : in  unsigned(15 downto 0); -- entrada 
         rs1_data, rs2_data   : out unsigned(15 downto 0) := "0000000000000000"
     );
@@ -99,38 +99,38 @@ architecture a_banco of banco is
     -- Vamos ter que usar 3 mux
 
     -- Preparando registrador para escrita
-    wr_en_1 <= '1' when wr_en='1' and rd="001" else '0';
-    wr_en_2 <= '1' when wr_en='1' and rd="010" else '0';
-    wr_en_3 <= '1' when wr_en='1' and rd="011" else '0';
-    wr_en_4 <= '1' when wr_en='1' and rd="100" else '0';
-    wr_en_5 <= '1' when wr_en='1' and rd="101" else '0';
-    wr_en_6 <= '1' when wr_en='1' and rd="110" else '0';
-    wr_en_7 <= '1' when wr_en='1' and rd="111" else '0';
+    wr_en_1 <= '1' when wr_en='1' and rd="0001" else '0';
+    wr_en_2 <= '1' when wr_en='1' and rd="0010" else '0';
+    wr_en_3 <= '1' when wr_en='1' and rd="0011" else '0';
+    wr_en_4 <= '1' when wr_en='1' and rd="0100" else '0';
+    wr_en_5 <= '1' when wr_en='1' and rd="0101" else '0';
+    wr_en_6 <= '1' when wr_en='1' and rd="0110" else '0';
+    wr_en_7 <= '1' when wr_en='1' and rd="0111" else '0';
 
     -- data_out_1 <= "0000000000000000" when wr_en_1='1' else "0000000000000000";
 
     -- Leitura do primeiro registrador
     rs1_data <= 
-        data_out_0 when rs1="000" else
-        data_out_1 when rs1="001" else
-        data_out_2 when rs1="010" else
-        data_out_3 when rs1="011" else
-        data_out_4 when rs1="100" else
-        data_out_5 when rs1="101" else
-        data_out_6 when rs1="110" else
-        data_out_7 when rs1="111" else
+        data_out_0 when rs1="0000" else
+        data_out_1 when rs1="0001" else
+        data_out_2 when rs1="0010" else
+        data_out_3 when rs1="0011" else
+        data_out_4 when rs1="0100" else
+        data_out_5 when rs1="0101" else
+        data_out_6 when rs1="0110" else
+        data_out_7 when rs1="0111" else
         "0000000000000000";
     
     -- Leitura do segundo registrador
     rs2_data <= 
-        data_out_0 when rs2="000" else
-        data_out_1 when rs2="001" else
-        data_out_2 when rs2="010" else
-        data_out_3 when rs2="011" else
-        data_out_4 when rs2="100" else
-        data_out_5 when rs2="101" else
-        data_out_6 when rs2="110" else
-        data_out_7 when rs2="111" else
+        data_out_0 when rs2="0000" else
+        data_out_1 when rs2="0001" else
+        data_out_2 when rs2="0010" else
+        data_out_3 when rs2="0011" else
+        data_out_4 when rs2="0100" else
+        data_out_5 when rs2="0101" else
+        data_out_6 when rs2="0110" else
+        data_out_7 when rs2="0111" else
         "0000000000000000";
 
 end architecture;
