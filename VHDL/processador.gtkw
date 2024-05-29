@@ -1,24 +1,24 @@
 [*]
 [*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
-[*] Sun May 26 14:09:53 2024
+[*] Wed May 29 21:20:46 2024
 [*]
 [dumpfile] "D:\ARQ_COMP\VHDL\processador_tb.ghw"
-[dumpfile_mtime] "Sun May 26 13:44:46 2024"
-[dumpfile_size] 58518
+[dumpfile_mtime] "Wed May 29 21:08:30 2024"
+[dumpfile_size] 39439
 [savefile] "D:\ARQ_COMP\VHDL\processador.gtkw"
-[timestart] 52658000000
+[timestart] 0
 [size] 1920 1017
-[pos] -61 -61
-*-28.780333 54852000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -35 -35
+*-28.780333 2350000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.processador_tb.
 [treeopen] top.processador_tb.uut.
-[treeopen] top.processador_tb.uut.acc_instance.
-[treeopen] top.processador_tb.uut.uc_instance.
+[treeopen] top.processador_tb.uut.banco_instance.
+[treeopen] top.processador_tb.uut.ram_instance.
 [sst_width] 197
-[signals_width] 182
+[signals_width] 249
 [sst_expanded] 1
-[sst_vpaned_height] 300
+[sst_vpaned_height] 588
 @28
 #{top.processador_tb.uut.estado[1:0]} top.processador_tb.uut.estado[1] top.processador_tb.uut.estado[0]
 @200
@@ -51,9 +51,26 @@ top.processador_tb.uut.acc_wr_en
 #{top.processador_tb.uut.acc_instance.registro[15:0]} top.processador_tb.uut.acc_instance.registro[15] top.processador_tb.uut.acc_instance.registro[14] top.processador_tb.uut.acc_instance.registro[13] top.processador_tb.uut.acc_instance.registro[12] top.processador_tb.uut.acc_instance.registro[11] top.processador_tb.uut.acc_instance.registro[10] top.processador_tb.uut.acc_instance.registro[9] top.processador_tb.uut.acc_instance.registro[8] top.processador_tb.uut.acc_instance.registro[7] top.processador_tb.uut.acc_instance.registro[6] top.processador_tb.uut.acc_instance.registro[5] top.processador_tb.uut.acc_instance.registro[4] top.processador_tb.uut.acc_instance.registro[3] top.processador_tb.uut.acc_instance.registro[2] top.processador_tb.uut.acc_instance.registro[1] top.processador_tb.uut.acc_instance.registro[0]
 @200
 -
--R3, R4, R5
+-RAM
+@28
+top.processador_tb.uut.ram_wr_en
+@22
+#{top.processador_tb.uut.ram_in[6:0]} top.processador_tb.uut.ram_in[6] top.processador_tb.uut.ram_in[5] top.processador_tb.uut.ram_in[4] top.processador_tb.uut.ram_in[3] top.processador_tb.uut.ram_in[2] top.processador_tb.uut.ram_in[1] top.processador_tb.uut.ram_in[0]
+#{top.processador_tb.uut.ram_instance.dado_in[15:0]} top.processador_tb.uut.ram_instance.dado_in[15] top.processador_tb.uut.ram_instance.dado_in[14] top.processador_tb.uut.ram_instance.dado_in[13] top.processador_tb.uut.ram_instance.dado_in[12] top.processador_tb.uut.ram_instance.dado_in[11] top.processador_tb.uut.ram_instance.dado_in[10] top.processador_tb.uut.ram_instance.dado_in[9] top.processador_tb.uut.ram_instance.dado_in[8] top.processador_tb.uut.ram_instance.dado_in[7] top.processador_tb.uut.ram_instance.dado_in[6] top.processador_tb.uut.ram_instance.dado_in[5] top.processador_tb.uut.ram_instance.dado_in[4] top.processador_tb.uut.ram_instance.dado_in[3] top.processador_tb.uut.ram_instance.dado_in[2] top.processador_tb.uut.ram_instance.dado_in[1] top.processador_tb.uut.ram_instance.dado_in[0]
+#{top.processador_tb.uut.ram_instance.endereco[6:0]} top.processador_tb.uut.ram_instance.endereco[6] top.processador_tb.uut.ram_instance.endereco[5] top.processador_tb.uut.ram_instance.endereco[4] top.processador_tb.uut.ram_instance.endereco[3] top.processador_tb.uut.ram_instance.endereco[2] top.processador_tb.uut.ram_instance.endereco[1] top.processador_tb.uut.ram_instance.endereco[0]
+#{top.processador_tb.uut.ram_instance.conteudo_ram[1][15:0]} top.processador_tb.uut.ram_instance.conteudo_ram[1][15] top.processador_tb.uut.ram_instance.conteudo_ram[1][14] top.processador_tb.uut.ram_instance.conteudo_ram[1][13] top.processador_tb.uut.ram_instance.conteudo_ram[1][12] top.processador_tb.uut.ram_instance.conteudo_ram[1][11] top.processador_tb.uut.ram_instance.conteudo_ram[1][10] top.processador_tb.uut.ram_instance.conteudo_ram[1][9] top.processador_tb.uut.ram_instance.conteudo_ram[1][8] top.processador_tb.uut.ram_instance.conteudo_ram[1][7] top.processador_tb.uut.ram_instance.conteudo_ram[1][6] top.processador_tb.uut.ram_instance.conteudo_ram[1][5] top.processador_tb.uut.ram_instance.conteudo_ram[1][4] top.processador_tb.uut.ram_instance.conteudo_ram[1][3] top.processador_tb.uut.ram_instance.conteudo_ram[1][2] top.processador_tb.uut.ram_instance.conteudo_ram[1][1] top.processador_tb.uut.ram_instance.conteudo_ram[1][0]
+#{top.processador_tb.uut.ram_instance.conteudo_ram[2][15:0]} top.processador_tb.uut.ram_instance.conteudo_ram[2][15] top.processador_tb.uut.ram_instance.conteudo_ram[2][14] top.processador_tb.uut.ram_instance.conteudo_ram[2][13] top.processador_tb.uut.ram_instance.conteudo_ram[2][12] top.processador_tb.uut.ram_instance.conteudo_ram[2][11] top.processador_tb.uut.ram_instance.conteudo_ram[2][10] top.processador_tb.uut.ram_instance.conteudo_ram[2][9] top.processador_tb.uut.ram_instance.conteudo_ram[2][8] top.processador_tb.uut.ram_instance.conteudo_ram[2][7] top.processador_tb.uut.ram_instance.conteudo_ram[2][6] top.processador_tb.uut.ram_instance.conteudo_ram[2][5] top.processador_tb.uut.ram_instance.conteudo_ram[2][4] top.processador_tb.uut.ram_instance.conteudo_ram[2][3] top.processador_tb.uut.ram_instance.conteudo_ram[2][2] top.processador_tb.uut.ram_instance.conteudo_ram[2][1] top.processador_tb.uut.ram_instance.conteudo_ram[2][0]
+#{top.processador_tb.uut.ram_instance.conteudo_ram[3][15:0]} top.processador_tb.uut.ram_instance.conteudo_ram[3][15] top.processador_tb.uut.ram_instance.conteudo_ram[3][14] top.processador_tb.uut.ram_instance.conteudo_ram[3][13] top.processador_tb.uut.ram_instance.conteudo_ram[3][12] top.processador_tb.uut.ram_instance.conteudo_ram[3][11] top.processador_tb.uut.ram_instance.conteudo_ram[3][10] top.processador_tb.uut.ram_instance.conteudo_ram[3][9] top.processador_tb.uut.ram_instance.conteudo_ram[3][8] top.processador_tb.uut.ram_instance.conteudo_ram[3][7] top.processador_tb.uut.ram_instance.conteudo_ram[3][6] top.processador_tb.uut.ram_instance.conteudo_ram[3][5] top.processador_tb.uut.ram_instance.conteudo_ram[3][4] top.processador_tb.uut.ram_instance.conteudo_ram[3][3] top.processador_tb.uut.ram_instance.conteudo_ram[3][2] top.processador_tb.uut.ram_instance.conteudo_ram[3][1] top.processador_tb.uut.ram_instance.conteudo_ram[3][0]
+#{top.processador_tb.uut.ram_instance.conteudo_ram[4][15:0]} top.processador_tb.uut.ram_instance.conteudo_ram[4][15] top.processador_tb.uut.ram_instance.conteudo_ram[4][14] top.processador_tb.uut.ram_instance.conteudo_ram[4][13] top.processador_tb.uut.ram_instance.conteudo_ram[4][12] top.processador_tb.uut.ram_instance.conteudo_ram[4][11] top.processador_tb.uut.ram_instance.conteudo_ram[4][10] top.processador_tb.uut.ram_instance.conteudo_ram[4][9] top.processador_tb.uut.ram_instance.conteudo_ram[4][8] top.processador_tb.uut.ram_instance.conteudo_ram[4][7] top.processador_tb.uut.ram_instance.conteudo_ram[4][6] top.processador_tb.uut.ram_instance.conteudo_ram[4][5] top.processador_tb.uut.ram_instance.conteudo_ram[4][4] top.processador_tb.uut.ram_instance.conteudo_ram[4][3] top.processador_tb.uut.ram_instance.conteudo_ram[4][2] top.processador_tb.uut.ram_instance.conteudo_ram[4][1] top.processador_tb.uut.ram_instance.conteudo_ram[4][0]
+@200
+-
+-R1, R2, R3, R4, R5
 @28
 top.processador_tb.uut.banco_wr_en
+@22
+#{top.processador_tb.uut.banco_instance.x1.registro[15:0]} top.processador_tb.uut.banco_instance.x1.registro[15] top.processador_tb.uut.banco_instance.x1.registro[14] top.processador_tb.uut.banco_instance.x1.registro[13] top.processador_tb.uut.banco_instance.x1.registro[12] top.processador_tb.uut.banco_instance.x1.registro[11] top.processador_tb.uut.banco_instance.x1.registro[10] top.processador_tb.uut.banco_instance.x1.registro[9] top.processador_tb.uut.banco_instance.x1.registro[8] top.processador_tb.uut.banco_instance.x1.registro[7] top.processador_tb.uut.banco_instance.x1.registro[6] top.processador_tb.uut.banco_instance.x1.registro[5] top.processador_tb.uut.banco_instance.x1.registro[4] top.processador_tb.uut.banco_instance.x1.registro[3] top.processador_tb.uut.banco_instance.x1.registro[2] top.processador_tb.uut.banco_instance.x1.registro[1] top.processador_tb.uut.banco_instance.x1.registro[0]
+@23
+#{top.processador_tb.uut.banco_instance.x2.registro[15:0]} top.processador_tb.uut.banco_instance.x2.registro[15] top.processador_tb.uut.banco_instance.x2.registro[14] top.processador_tb.uut.banco_instance.x2.registro[13] top.processador_tb.uut.banco_instance.x2.registro[12] top.processador_tb.uut.banco_instance.x2.registro[11] top.processador_tb.uut.banco_instance.x2.registro[10] top.processador_tb.uut.banco_instance.x2.registro[9] top.processador_tb.uut.banco_instance.x2.registro[8] top.processador_tb.uut.banco_instance.x2.registro[7] top.processador_tb.uut.banco_instance.x2.registro[6] top.processador_tb.uut.banco_instance.x2.registro[5] top.processador_tb.uut.banco_instance.x2.registro[4] top.processador_tb.uut.banco_instance.x2.registro[3] top.processador_tb.uut.banco_instance.x2.registro[2] top.processador_tb.uut.banco_instance.x2.registro[1] top.processador_tb.uut.banco_instance.x2.registro[0]
 @22
 #{top.processador_tb.uut.banco_instance.x3.registro[15:0]} top.processador_tb.uut.banco_instance.x3.registro[15] top.processador_tb.uut.banco_instance.x3.registro[14] top.processador_tb.uut.banco_instance.x3.registro[13] top.processador_tb.uut.banco_instance.x3.registro[12] top.processador_tb.uut.banco_instance.x3.registro[11] top.processador_tb.uut.banco_instance.x3.registro[10] top.processador_tb.uut.banco_instance.x3.registro[9] top.processador_tb.uut.banco_instance.x3.registro[8] top.processador_tb.uut.banco_instance.x3.registro[7] top.processador_tb.uut.banco_instance.x3.registro[6] top.processador_tb.uut.banco_instance.x3.registro[5] top.processador_tb.uut.banco_instance.x3.registro[4] top.processador_tb.uut.banco_instance.x3.registro[3] top.processador_tb.uut.banco_instance.x3.registro[2] top.processador_tb.uut.banco_instance.x3.registro[1] top.processador_tb.uut.banco_instance.x3.registro[0]
 #{top.processador_tb.uut.banco_instance.x4.registro[15:0]} top.processador_tb.uut.banco_instance.x4.registro[15] top.processador_tb.uut.banco_instance.x4.registro[14] top.processador_tb.uut.banco_instance.x4.registro[13] top.processador_tb.uut.banco_instance.x4.registro[12] top.processador_tb.uut.banco_instance.x4.registro[11] top.processador_tb.uut.banco_instance.x4.registro[10] top.processador_tb.uut.banco_instance.x4.registro[9] top.processador_tb.uut.banco_instance.x4.registro[8] top.processador_tb.uut.banco_instance.x4.registro[7] top.processador_tb.uut.banco_instance.x4.registro[6] top.processador_tb.uut.banco_instance.x4.registro[5] top.processador_tb.uut.banco_instance.x4.registro[4] top.processador_tb.uut.banco_instance.x4.registro[3] top.processador_tb.uut.banco_instance.x4.registro[2] top.processador_tb.uut.banco_instance.x4.registro[1] top.processador_tb.uut.banco_instance.x4.registro[0]

@@ -69,6 +69,7 @@ architecture a_processador of processador is
             banco_wr_en    : out std_logic;
             acc_wr_en      : out std_logic;
             instr_wr_en    : out std_logic;
+            ram_wr_en      : out std_logic;
 
             -- RESET
             banco_rst      : out std_logic := '0';
@@ -86,6 +87,7 @@ architecture a_processador of processador is
 
             -- Controle Banco
             rs2, rd        : out unsigned (3 downto 0);
+            sel_mux_regs   : out std_logic;
 
             -- Controle Maquina Estados
             estado         : out unsigned (1 downto 0)
@@ -100,6 +102,16 @@ architecture a_processador of processador is
             carry, overflow       : out std_logic; -- Flag para Carry e Overflow 
             zero, negative        : out std_logic; -- Flag para Zero e negativo
             menor, maior, igual   : out std_logic  -- Flag para Menor e Maior
+        );
+    end component;
+
+    component ram is
+        port (
+            clk      : in std_logic;
+            endereco : in unsigned(6 downto 0);
+            wr_en    : in std_logic;
+            dado_in  : in unsigned(15 downto 0);
+            dado_out : out unsigned(15 downto 0)
         );
     end component;
 
@@ -139,10 +151,12 @@ architecture a_processador of processador is
     signal j_or_b         : unsigned (1 downto 0);
     signal estado_out     : unsigned (1 downto 0);
     signal tipo_cmp       : unsigned (2 downto 0); 
+    signal sel_mux_regs   : std_logic;
 
     -- BANCO
     signal rs1_data       : unsigned (15 downto 0); 
-    signal rs2_data       : unsigned (15 downto 0); 
+    signal rs2_data       : unsigned (15 downto 0);
+    signal mux_banco      : unsigned (15 downto 0); 
 
     -- ULA
     signal ula_out        : unsigned (15 downto 0);
@@ -154,6 +168,11 @@ architecture a_processador of processador is
     signal negative_out   : std_logic; 
     signal carry_out      : std_logic; 
     signal overflow_out   : std_logic; 
+
+    -- RAM
+    signal ram_wr_en      : std_logic;
+    signal ram_in         : unsigned (6 downto 0);
+    signal ram_out        : unsigned (15 downto 0);
 
     -- ACC
     signal acc_out        : unsigned (15 downto 0);
@@ -205,10 +224,11 @@ architecture a_processador of processador is
         instrucao => instrucao_out,     
 
         -- WRITE ENABLE
-        pc_wr_en => pc_wr_en,      
-        banco_wr_en  =>  banco_wr_en,
-        acc_wr_en =>  acc_wr_en,     
-        instr_wr_en => instr_wr_en,   
+        pc_wr_en     => pc_wr_en,      
+        banco_wr_en  => banco_wr_en,
+        acc_wr_en    => acc_wr_en,     
+        instr_wr_en  => instr_wr_en,  
+        ram_wr_en    => ram_wr_en, 
 
         -- RESET
         banco_rst  =>  banco_rst,   
@@ -226,7 +246,8 @@ architecture a_processador of processador is
 
         -- Controle Banco
         rs2 => rs2_out, 
-        rd  => rd_out,      
+        rd  => rd_out,    
+        sel_mux_regs => sel_mux_regs,
 
         -- Controle Maquina Estados
         estado  => estado_out       
@@ -249,24 +270,33 @@ architecture a_processador of processador is
         rs1        =>  "0000",
         rs2        =>  rs2_out,
         rd         =>  rd_out,
-        entr       =>  ula_out,
+        entr       =>  mux_banco,
         rs1_data   =>  rs1_data,
         rs2_data   =>  rs2_data
     );
 
     ula_instance: ula 
     port map(   
-        sel     =>  ula_sel,
-        entr0   =>  acc_out,
-        entr1   =>  mux_ula,
-        saida   =>  ula_out,
-        carry   => carry_out,
+        sel      =>  ula_sel,
+        entr0    =>  acc_out,
+        entr1    =>  mux_ula,
+        saida    =>  ula_out,
+        carry    => carry_out,
         overflow => overflow_out, 
-        zero => zero_out, 
+        zero     => zero_out, 
         negative => negative_out,
-        menor => menor_out, 
-        maior => maior_out, 
-        igual => igual_out
+        menor    => menor_out, 
+        maior    => maior_out, 
+        igual    => igual_out
+    );
+
+    ram_instance: ram
+    port map (
+        clk      => clk,
+        endereco => ram_in,
+        wr_en    => ram_wr_en,
+        dado_in  => rs2_data,
+        dado_out => ram_out
     );
 
     mux_somador <=
@@ -287,6 +317,12 @@ architecture a_processador of processador is
     mux_pc <= 
         add1_out when pc_sel='0' else
         somador_out;
+
+    ram_in <= ula_out(6 downto 0);
+
+    mux_banco <=
+        ram_out when sel_mux_regs = '0' else
+        ula_out;
 
     mux_ula <= 
         rs2_data   when reg_or_imm = '0' else

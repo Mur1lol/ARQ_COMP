@@ -9,6 +9,7 @@ ghdl -a reg16bits.vhd
 ghdl -a uc.vhd
 ghdl -a banco.vhd
 ghdl -a ula.vhd
+ghdl -a ram.vhd
 ghdl -a processador.vhd
 ghdl -a processador_tb.vhd
 
@@ -21,6 +22,7 @@ ghdl -e reg16bits
 ghdl -e uc
 ghdl -e banco
 ghdl -e ula
+ghdl -e ram
 ghdl -e processador
 ghdl -e processador_tb
 

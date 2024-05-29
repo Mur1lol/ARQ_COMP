@@ -14,6 +14,7 @@ entity uc is
         banco_wr_en    : out std_logic;
         acc_wr_en      : out std_logic;
         instr_wr_en    : out std_logic;
+        ram_wr_en      : out std_logic;
 
         -- RESET
         banco_rst      : out std_logic := '0';
@@ -31,6 +32,7 @@ entity uc is
 
         -- Controle Banco
         rs2, rd        : out unsigned(3 downto 0);
+        sel_mux_regs   : out std_logic;
 
         -- Controle Maquina Estados
         estado         : out unsigned(1 downto 0)
@@ -63,6 +65,7 @@ architecture a_uc of uc is
 
     -- Fetch
     instr_wr_en <= '1' when saida_maquina="00" else '0';
+    
 
     -- Decode
     opcode         <= instrucao(15 downto 11) when saida_maquina="01";
@@ -77,12 +80,26 @@ architecture a_uc of uc is
     
     jump_or_branch <= j_or_b_signal;
 
+    ram_wr_en <= '1' when saida_maquina="01" AND opcode="11110" else '0';
+
     tipo_cmp     <= 
         "000" when saida_maquina="01" AND (opcode="01001" OR opcode="11001") else
         "001" when saida_maquina="01" AND (opcode="01010" OR opcode="11010") else
         "010" when saida_maquina="01" AND (opcode="01011" OR opcode="11011") else
         "011" when saida_maquina="01" AND (opcode="01100" OR opcode="11100") else
         "100" when saida_maquina="01" AND (opcode="01000" OR opcode="11000");
+
+    reg_or_imm    <=
+        -- Imediato
+        '1' when saida_maquina="01" AND 
+        (opcode="00001" OR opcode="00101" OR opcode="00111" OR 
+        opcode="11101" OR opcode="11110") else 
+        -- Registrador
+        '0' when saida_maquina="01" AND 
+        (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00110");
+
+    -- entr <= saida_ram when 0    (LW)
+    sel_mux_regs <= '0' when saida_maquina="01" AND opcode="11101" else '1';
 
     -- Execute
     rd_signal  <= 
@@ -95,11 +112,14 @@ architecture a_uc of uc is
     rs2 <= 
         instrucao(6  downto  3) when saida_maquina="10" AND 
         (opcode="00010" OR opcode="00011" OR 
-        opcode="00100" OR opcode="00110");
+        opcode="00100" OR opcode="00110") else
+        instrucao(10 downto  7) when saida_maquina="10" AND
+        (opcode="11110");
 
     imm <= 
         (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND
-        (opcode="00001" OR opcode="00101" OR opcode="00111");
+        (opcode="00001" OR opcode="00101" OR opcode="00111" OR 
+        opcode="11101" OR opcode="11110");
     
     banco_wr_en   <= 
         '1' when saida_maquina="10" AND rd_signal /= "1111" AND 
@@ -126,14 +146,4 @@ architecture a_uc of uc is
         "11" when saida_maquina="10" AND 
         (opcode="00010");
 
-    reg_or_imm    <=
-        -- Imediato
-        '1' when saida_maquina="01" AND 
-        (opcode="00001" OR opcode="00101" OR opcode="00111") else 
-        -- Registrador
-        '0' when saida_maquina="01" AND 
-        (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00110");
-
-    
-    
 end architecture;
