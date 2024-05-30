@@ -80,7 +80,7 @@ architecture a_uc of uc is
     
     jump_or_branch <= j_or_b_signal;
 
-    ram_wr_en <= '1' when saida_maquina="01" AND opcode="11110" else '0';
+    
 
     tipo_cmp     <= 
         "000" when saida_maquina="01" AND (opcode="01001" OR opcode="11001") else
@@ -104,8 +104,8 @@ architecture a_uc of uc is
     -- Execute
     rd_signal  <= 
         instrucao(10 downto  7) when saida_maquina="10" AND 
-        (opcode="00001" OR opcode="00010" OR opcode="00011" OR 
-        opcode="00100" OR opcode="00101" OR opcode="00110" OR opcode="00111");
+        (opcode="00001" OR opcode="00010" OR opcode="00011" OR opcode="00100" OR 
+        opcode="00101" OR opcode="00110" OR opcode="00111" OR opcode="11101");
 
     rd <= rd_signal;
     
@@ -120,10 +120,12 @@ architecture a_uc of uc is
         (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND
         (opcode="00001" OR opcode="00101" OR opcode="00111" OR 
         opcode="11101" OR opcode="11110");
+
+    ram_wr_en <= '1' when saida_maquina="10" AND opcode="11110" else '0';
     
     banco_wr_en   <= 
         '1' when saida_maquina="10" AND rd_signal /= "1111" AND 
-        (opcode="00010" OR opcode="00011" OR opcode="00100") else 
+        (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="11101") else 
         '0';
 
     acc_wr_en     <= 
