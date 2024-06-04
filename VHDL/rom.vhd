@@ -10,7 +10,7 @@ entity rom is
     );
 end entity;
 architecture a_rom of rom is
-    type mem is array (0 to 65535) of unsigned(15 downto 0);
+    type mem is array (0 to 127) of unsigned(15 downto 0);
     constant conteudo_rom : mem := (
         -- caso endereco => conteudo
 
@@ -31,8 +31,9 @@ architecture a_rom of rom is
         7  => B"11101_0001_0000001" , -- B: LW   R1, 1(A)
         8  => B"11101_0010_0000010" , -- C: LW   R2, 2(A)
         9  => B"11101_0011_0000011" , -- D: LW   R3, 3(A)
-        10 => B"00010_1111_0001_000", --    MOV   A, R1
-        11 => B"00011_0011_0001_000", -- E: SUB  R3, A
+        10 => B"00010_1111_0011_000", --    MOV   A, R3
+        11 => B"00011_1111_0001_000", --    SUB   A, R1
+        12 => B"00010_0011_1111_000", -- E: MOV  R3, A
         -- abaixo: casos omissos => (zero em todos os bits)
         others => (others=>'0')
     );

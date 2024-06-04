@@ -52,6 +52,7 @@ architecture a_uc of uc is
     signal opcode        : unsigned (4 downto 0);
     signal j_or_b_signal : unsigned (1 downto 0);
     signal rd_signal     : unsigned (3 downto 0);
+    signal rs2_signal     : unsigned (3 downto 0);
 
     begin
     maquina_estados_instance: maquina_estados
@@ -108,13 +109,17 @@ architecture a_uc of uc is
         opcode="00101" OR opcode="00110" OR opcode="00111" OR opcode="11101");
 
     rd <= rd_signal;
+
+    rs2_signal <= instrucao(6  downto  3);
     
     rs2 <= 
+        instrucao(10 downto  7) when saida_maquina="10" AND
+        (opcode="11110" OR ((opcode="00011" OR opcode="00100") AND rs2_signal="1111"))
+    else
         instrucao(6  downto  3) when saida_maquina="10" AND 
         (opcode="00010" OR opcode="00011" OR 
-        opcode="00100" OR opcode="00110") else
-        instrucao(10 downto  7) when saida_maquina="10" AND
-        (opcode="11110");
+        opcode="00100" OR opcode="00110") 
+    ;
 
     imm <= 
         (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND

@@ -24,7 +24,7 @@ architecture a_banco of banco is
     signal data_out_0, data_out_1, data_out_2, data_out_3, data_out_4, data_out_5, data_out_6, data_out_7   :   unsigned(15 downto 0);  
      
     begin
-    x0: reg16bits
+    r0: reg16bits
     port map( 
         clk       => clk,
         rst       => '1',
@@ -33,7 +33,7 @@ architecture a_banco of banco is
         data_out  => data_out_0
     );
 
-    x1: reg16bits
+    r1: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -42,7 +42,7 @@ architecture a_banco of banco is
         data_out  => data_out_1  
     );  
 
-    x2: reg16bits
+    r2: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -51,7 +51,7 @@ architecture a_banco of banco is
         data_out  => data_out_2  
     );  
 
-    x3: reg16bits
+    r3: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -60,7 +60,7 @@ architecture a_banco of banco is
         data_out  => data_out_3  
     );  
 
-    x4: reg16bits
+    r4: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -69,7 +69,7 @@ architecture a_banco of banco is
         data_out  => data_out_4  
     );  
 
-    x5: reg16bits
+    r5: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -78,7 +78,7 @@ architecture a_banco of banco is
         data_out  => data_out_5  
     );  
 
-    x6: reg16bits
+    r6: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,
@@ -87,7 +87,7 @@ architecture a_banco of banco is
         data_out  => data_out_6  
     );  
 
-    x7: reg16bits
+    r7: reg16bits
     port map( 
         clk       => clk,
         rst       => rst,

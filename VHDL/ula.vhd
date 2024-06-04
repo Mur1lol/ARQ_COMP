@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity ula is
-    port (
+    port ( 
         sel                   : in  unsigned(1 downto 0); -- Seletor de operações (soma, subtração, load e mov)
         entr0, entr1          : in  unsigned(15 downto 0); -- Entrada de 16 bits
         saida                 : out unsigned(15 downto 0); -- Saida 16 bits
