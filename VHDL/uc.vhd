@@ -15,6 +15,7 @@ entity uc is
         acc_wr_en      : out std_logic;
         instr_wr_en    : out std_logic;
         ram_wr_en      : out std_logic;
+        flags_wr_en    : out std_logic;
 
         -- RESET
         banco_rst      : out std_logic := '0';
@@ -100,7 +101,9 @@ architecture a_uc of uc is
         (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00110");
 
     -- entr <= saida_ram when 0    (LW)
-    sel_mux_regs <= '0' when saida_maquina="01" AND opcode="11101" else '1';
+    sel_mux_regs <= 
+        '0' when (saida_maquina="01" OR saida_maquina="10") AND opcode="11101" else 
+        '1';
 
     -- Execute
     rd_signal  <= 
@@ -138,14 +141,20 @@ architecture a_uc of uc is
         (opcode="00001" OR opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00101") else 
         '0';
 
+    flags_wr_en    <= 
+        '1' when saida_maquina="10" AND 
+        (opcode="00110" OR opcode="00111" OR opcode="00100" OR opcode="00101" OR opcode="00011") 
+        else
+        '0';              
+
     -- Controle ULA
     ula_sel       <=
         -- ADD OR ADDI
         "00" when saida_maquina="10" AND 
-        (opcode="00100" OR opcode="00101") else 
+        (opcode="00100" OR opcode="00101" OR opcode="11101" OR opcode="11110") else 
         -- SUB
         "01" when saida_maquina="10" AND 
-        (opcode="00011") else 
+        (opcode="00011" OR opcode="00110" OR opcode="00111") else 
         -- LD
         "10" when saida_maquina="10" AND 
         (opcode="00001" OR (opcode="00010" AND rd_signal = "1111")) else 

@@ -70,6 +70,7 @@ architecture a_processador of processador is
             acc_wr_en      : out std_logic;
             instr_wr_en    : out std_logic;
             ram_wr_en      : out std_logic;
+            flags_wr_en    : out std_logic;
 
             -- RESET
             banco_rst      : out std_logic := '0';
@@ -100,8 +101,23 @@ architecture a_processador of processador is
             entr0, entr1          : in  unsigned(15 downto 0); -- Entrada de 16 bits
             saida                 : out unsigned(15 downto 0); -- Saida 16 bits
             carry, overflow       : out std_logic; -- Flag para Carry e Overflow 
-            zero, negative        : out std_logic; -- Flag para Zero e negativo
-            menor, maior, igual   : out std_logic  -- Flag para Menor e Maior
+            zero, negative        : out std_logic  -- Flag para Zero e negativo
+        );
+    end component;
+
+    component flags is
+        port( 
+            clk, wr_en   : in  std_logic;
+
+            carry_in     : in std_logic;
+            overflow_in  : in std_logic;
+            zero_in      : in std_logic;
+            negative_in  : in std_logic;
+            
+            carry_out     : out std_logic;
+            overflow_out  : out std_logic;
+            zero_out      : out std_logic;
+            negative_out  : out std_logic
         );
     end component;
 
@@ -122,6 +138,7 @@ architecture a_processador of processador is
     signal banco_wr_en    : std_logic;
     signal acc_wr_en      : std_logic;
     signal instr_wr_en    : std_logic;
+    signal flags_wr_en    : std_logic;
 
     -- RESET
     signal banco_rst      : std_logic;
@@ -161,13 +178,16 @@ architecture a_processador of processador is
     -- ULA
     signal ula_out        : unsigned (15 downto 0);
     signal mux_ula        : unsigned (15 downto 0);
-    signal menor_out      : std_logic; 
-    signal maior_out      : std_logic; 
-    signal igual_out      : std_logic; 
+    signal zero_in       : std_logic; 
+    signal negative_in   : std_logic; 
+    signal carry_in      : std_logic; 
+    signal overflow_in   : std_logic; 
+
+    -- FLAGS
     signal zero_out       : std_logic; 
     signal negative_out   : std_logic; 
     signal carry_out      : std_logic; 
-    signal overflow_out   : std_logic; 
+    signal overflow_out   : std_logic;
 
     -- RAM
     signal ram_wr_en      : std_logic;
@@ -229,6 +249,7 @@ architecture a_processador of processador is
         acc_wr_en    => acc_wr_en,     
         instr_wr_en  => instr_wr_en,  
         ram_wr_en    => ram_wr_en, 
+        flags_wr_en  => flags_wr_en,
 
         -- RESET
         banco_rst  =>  banco_rst,   
@@ -281,13 +302,26 @@ architecture a_processador of processador is
         entr0    =>  acc_out,
         entr1    =>  mux_ula,
         saida    =>  ula_out,
-        carry    => carry_out,
-        overflow => overflow_out, 
-        zero     => zero_out, 
-        negative => negative_out,
-        menor    => menor_out, 
-        maior    => maior_out, 
-        igual    => igual_out
+        carry    => carry_in,
+        overflow => overflow_in, 
+        zero     => zero_in, 
+        negative => negative_in
+    );
+
+    flags_instance: flags 
+    port map( 
+        clk         => clk, 
+        wr_en       => flags_wr_en,
+
+        carry_in     => carry_in,
+        overflow_in  => overflow_in,
+        zero_in      => zero_in,
+        negative_in  => negative_in,
+        
+        carry_out     => carry_out,
+        overflow_out  => overflow_out,
+        zero_out      => zero_out,
+        negative_out  => negative_out    
     );
 
     ram_instance: ram
@@ -306,10 +340,10 @@ architecture a_processador of processador is
     pc_sel <= 
         '1' when (j_or_b="01" OR j_or_b="10") AND
                  (
-                    (tipo_cmp = "000" AND menor_out='1') OR
-                    (tipo_cmp = "001" AND maior_out='1') OR
-                    (tipo_cmp = "010" AND igual_out='1') OR
-                    (tipo_cmp = "011" AND igual_out='0') OR
+                    (tipo_cmp = "000" AND negative_out='1') OR  -- MENOR
+                    (tipo_cmp = "001" AND negative_out='0') OR  -- MAIOR
+                    (tipo_cmp = "010" AND zero_out='0') OR   -- DIFF
+                    (tipo_cmp = "011" AND zero_out='1') OR  -- IGUAL
                     (tipo_cmp = "100")
                  ) else
         '0';

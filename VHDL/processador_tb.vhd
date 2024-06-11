@@ -39,7 +39,8 @@ architecture a_processador_tb of processador_tb is
 
     sim_time_proc: process
     begin
-        wait for 56000 ns;
+        -- wait for 10000000 ns;
+        wait for 226250 ns;
         finished <= '1';	
         wait;
     end process sim_time_proc;

@@ -8,8 +8,7 @@ entity ula is
         entr0, entr1          : in  unsigned(15 downto 0); -- Entrada de 16 bits
         saida                 : out unsigned(15 downto 0); -- Saida 16 bits
         carry, overflow       : out std_logic; -- Flag para Carry e Overflow 
-        zero, negative        : out std_logic; -- Flag para Zero e negativo
-        menor, maior, igual   : out std_logic  -- Flag para Menor e Maior
+        zero, negative        : out std_logic  -- Flag para Zero e negativo
     );
 end entity;
 
@@ -35,10 +34,6 @@ architecture a_ula of ula is
 
         -- Sinal (ou Negativo), que indica o sinal do resultado da operação mais recente da ULA (ou o sinal do acumulador, depende!), sendo apenas uma cópia do MSB.
         negative <= saida_17(15); 
-
-        menor <= '1' when entr0<entr1 else '0';
-        maior <= '1' when entr0>entr1 else '0';
-        igual <= '1' when entr0=entr1 else '0';
 
         -- Zero, que indica que o resultado da operação mais recente da ULA foi zero;
         zero <= 
