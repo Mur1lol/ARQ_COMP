@@ -1,0 +1,37 @@
+/-------------------------------------------------------------------------------------------------------\
+| COMANDOS ASSEMBLY |        BINARIO        |                         DESCRIÇÃO                         |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| NOP               |  00000_0000_0000_000  | Não executa nenhum comando                                |
+|-------------------+-----------------------+-----------------------------------------------------------|  
+| LI   | acc | imm  |  00001_1111__ccccccc  | Carrega um constante para o acumulador (-64 até 63)       |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| MOV  | acc | reg  |  00010_dddd_ssss_xxx  | Carrega o valor do acc no reg ou reg no acc               |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| SUB  | acc | reg  |  00011_1111_ssss_xxx  | Subtrai o acc com o reg e salva no acc                    |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| ADD  | acc | reg  |  00100_dddd_ssss_xxx  | Soma o acc com o reg e salva no acc ou reg                |
+| ADDI | acc | imm  |  00101_1111__ccccccc  | Soma o acc com o imm e salva no acumulador                |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| CMP  | acc | reg  |  00110_dddd_ssss_xxx  | Compara o acumulador com um registrador                   |
+| CMPI | acc | imm  |  00111_1111__ccccccc  | Compara o acumulador com um imediato                      |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| JUMP (ABSOLUTO)   |                       |                                                           |
+| JMP  | imm        |  01000_xxxx__ccccccc  | Pula sem precisar de comparação                           |
+| JLT  | imm        |  01001_xxxx__ccccccc  | Pula se a comparação for menor                            |
+| JGT  | imm        |  01010_xxxx__ccccccc  | Pula se a comparação for maior                            |
+| JNE  | imm        |  01011_xxxx__ccccccc  | Pula se a comparação for diferente                        |
+| JEQ  | imm        |  01100_xxxx__ccccccc  | Pula se a comparação for igual                            |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| BRANCH (RELATIVO) |                       |                                                           |
+| BR   | imm        |  11000_xxxx__ccccccc  | Pula sem precisar de comparação                           |
+| BLT  | imm        |  11001_xxxx__ccccccc  | Pula se a comparação for menor                            |
+| BGT  | imm        |  11010_xxxx__ccccccc  | Pula se a comparação for maior                            |
+| BNE  | imm        |  11011_xxxx__ccccccc  | Pula se a comparação for diferente                        |
+| BEQ  | imm        |  11100_xxxx__ccccccc  | Pula se a comparação for igual                            |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| LW   | reg | imm  |  11101_dddd__ccccccc  | Carrega o valor do endereço (imm + A) no registrador      |
+| SW   | reg | imm  |  11110_ssss__ccccccc  | Carrega o valor do registrador no endereço (imm + A)      |
+|-------------------+-----------------------+-----------------------------------------------------------|
+| LUI  | acc | imm  |  11111_1111__ccccccc  | Carrega uma constante para os 7 bits mais significativos  | 
+|      |     |      |                       | (0111111 = 32256) (0000001 = 512) (1000000 = -32768)      |
+\-------------------------------------------------------------------------------------------------------/

@@ -124,7 +124,7 @@ architecture a_processador of processador is
     component ram is
         port (
             clk      : in std_logic;
-            endereco : in unsigned(6 downto 0);
+            endereco : in unsigned(13 downto 0);
             wr_en    : in std_logic;
             dado_in  : in unsigned(15 downto 0);
             dado_out : out unsigned(15 downto 0)
@@ -191,7 +191,7 @@ architecture a_processador of processador is
 
     -- RAM
     signal ram_wr_en      : std_logic;
-    signal ram_in         : unsigned (6 downto 0);
+    signal ram_in         : unsigned (13 downto 0);
     signal ram_out        : unsigned (15 downto 0);
 
     -- ACC
@@ -352,7 +352,7 @@ architecture a_processador of processador is
         add1_out when pc_sel='0' else
         somador_out;
 
-    ram_in <= ula_out(6 downto 0);
+    ram_in <= ula_out(13 downto 0);
 
     mux_banco <=
         ram_out when sel_mux_regs = '0' else

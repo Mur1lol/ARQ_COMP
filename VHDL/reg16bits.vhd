@@ -11,7 +11,7 @@ entity reg16bits is
 end entity;
 
 architecture a_reg16bits of reg16bits is
-    signal registro: unsigned(15 downto 0);
+    signal registro: unsigned(15 downto 0) := "0000000000000000";
     begin
     process(clk,rst,wr_en)  -- acionado se houver mudança em clk, rst ou wr_en
         begin                

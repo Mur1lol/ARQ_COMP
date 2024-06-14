@@ -1,7 +1,12 @@
-LD    A, 32
-MOV   R7, A   -- R7: Maximo
+LUI A, 15360 (0011 110)
+ADDI A, -60 (1000100)
+ADDI A, -61 (1000011)
 
-LD    A, 0
+-- 15239
+
+MOV R7, A
+
+LI    A, 0
 MOV   R6, A   -- R6: Finalizado
 
 ADDI  A, 1
@@ -10,7 +15,7 @@ SW   R1, 0(A)
 CMP  A, R7
 BLT  -4
 
-LD A, 1
+LI A, 1
 MOV R1, A     -- R1: 1
 
 -- Inicio loop externo
@@ -24,7 +29,7 @@ LW R4, 0(A)
 CMP A, R4
 BNE -6        -- Se for diferente, então pula
 
-LD  A, 1
+LI  A, 1
 MOV  R3, A    -- R3: Contador
 
 -- Inicio loop interno
@@ -46,7 +51,7 @@ MOV A, R1
 CMP A, R3 -- R1-R3 
 -- BLT (3) -- JLT (34)  -- Se menor, então pula
 
-LD A, 1
+LI A, 1
 MOV R6, A  -- Finalizado = 1
 
 MOV A, R2

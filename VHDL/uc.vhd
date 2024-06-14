@@ -27,7 +27,7 @@ entity uc is
 
         -- Controle ULA
         ula_sel        : out unsigned (1 downto 0);
-        imm            : out unsigned (15 downto 0);
+        imm            : out unsigned (15 downto 0) := "0000000000000000";
         reg_or_imm     : out std_logic;
         tipo_cmp       : out unsigned (2 downto 0);
 
@@ -49,11 +49,11 @@ architecture a_uc of uc is
     end component;
 
     
-    signal saida_maquina : unsigned (1 downto 0);
-    signal opcode        : unsigned (4 downto 0);
-    signal j_or_b_signal : unsigned (1 downto 0);
-    signal rd_signal     : unsigned (3 downto 0);
-    signal rs2_signal     : unsigned (3 downto 0);
+    signal saida_maquina : unsigned (1 downto 0) := "00";
+    signal opcode        : unsigned (4 downto 0) := "00000";
+    signal j_or_b_signal : unsigned (1 downto 0) := "00";
+    signal rd_signal     : unsigned (3 downto 0) := "0000";
+    signal rs2_signal    : unsigned (3 downto 0) := "0000";
 
     begin
     maquina_estados_instance: maquina_estados
@@ -82,8 +82,6 @@ architecture a_uc of uc is
     
     jump_or_branch <= j_or_b_signal;
 
-    
-
     tipo_cmp     <= 
         "000" when saida_maquina="01" AND (opcode="01001" OR opcode="11001") else
         "001" when saida_maquina="01" AND (opcode="01010" OR opcode="11010") else
@@ -95,7 +93,7 @@ architecture a_uc of uc is
         -- Imediato
         '1' when saida_maquina="01" AND 
         (opcode="00001" OR opcode="00101" OR opcode="00111" OR 
-        opcode="11101" OR opcode="11110") else 
+        opcode="11101" OR opcode="11110" OR opcode="11111") else 
         -- Registrador
         '0' when saida_maquina="01" AND 
         (opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00110");
@@ -109,7 +107,7 @@ architecture a_uc of uc is
     rd_signal  <= 
         instrucao(10 downto  7) when saida_maquina="10" AND 
         (opcode="00001" OR opcode="00010" OR opcode="00011" OR opcode="00100" OR 
-        opcode="00101" OR opcode="00110" OR opcode="00111" OR opcode="11101");
+        opcode="00101" OR opcode="00110" OR opcode="00111" OR opcode="11101" OR opcode="11111");
 
     rd <= rd_signal;
 
@@ -127,7 +125,9 @@ architecture a_uc of uc is
     imm <= 
         (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND
         (opcode="00001" OR opcode="00101" OR opcode="00111" OR 
-        opcode="11101" OR opcode="11110");
+        opcode="11101" OR opcode="11110") else
+        instrucao(6  downto  0) & (8 downto 0 => '0') when saida_maquina="10" AND
+        (opcode="11111");
 
     ram_wr_en <= '1' when saida_maquina="10" AND opcode="11110" else '0';
     
@@ -138,7 +138,8 @@ architecture a_uc of uc is
 
     acc_wr_en     <= 
         '1' when saida_maquina="10" AND rd_signal = "1111" AND 
-        (opcode="00001" OR opcode="00010" OR opcode="00011" OR opcode="00100" OR opcode="00101") else 
+        (opcode="00001" OR opcode="00010" OR opcode="00011" OR 
+        opcode="00100" OR opcode="00101" OR opcode="11111") else 
         '0';
 
     flags_wr_en    <= 
@@ -155,9 +156,9 @@ architecture a_uc of uc is
         -- SUB
         "01" when saida_maquina="10" AND 
         (opcode="00011" OR opcode="00110" OR opcode="00111") else 
-        -- LD
+        -- LI OR LUI
         "10" when saida_maquina="10" AND 
-        (opcode="00001" OR (opcode="00010" AND rd_signal = "1111")) else 
+        (opcode="00001" OR opcode="11111" OR (opcode="00010" AND rd_signal = "1111")) else 
         -- MOV
         "11" when saida_maquina="10" AND 
         (opcode="00010");

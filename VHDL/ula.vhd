@@ -13,7 +13,7 @@ entity ula is
 end entity;
 
 architecture a_ula of ula is
-    signal saida_17, entr0_17, entr1_17 : unsigned(16 downto 0);
+    signal saida_17, entr0_17, entr1_17 : unsigned(16 downto 0) := "00000000000000000";
     begin
         -- entr0 <= acc
         -- entr1 <= reg OR imm
