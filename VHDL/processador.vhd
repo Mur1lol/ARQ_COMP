@@ -4,14 +4,15 @@ use ieee.numeric_std.all;
 
 entity processador is
     port (  
-        clk, rst   : in  std_logic;
-        estado     : out unsigned (1 downto 0);
-        saida_PC     : out unsigned (6 downto 0);
-        reg_instr  : out unsigned (15 downto 0);
-        saida_rs1    : out unsigned (15 downto 0);
-        saida_rs2    : out unsigned (15 downto 0);
-        saida_acc        : out unsigned (15 downto 0);
-        saida_ula    : out unsigned (15 downto 0)
+        clk, rst    : in  std_logic;
+        estado      : out unsigned (1 downto 0);
+        saida_PC    : out unsigned (6 downto 0);
+        reg_instr   : out unsigned (15 downto 0);
+        saida_rs1   : out unsigned (15 downto 0);
+        saida_rs2   : out unsigned (15 downto 0);
+        saida_acc   : out unsigned (15 downto 0);
+        saida_ula   : out unsigned (15 downto 0);
+        bit_debug   : out std_logic
     );
 end entity;
 
@@ -71,10 +72,12 @@ architecture a_processador of processador is
             instr_wr_en    : out std_logic;
             ram_wr_en      : out std_logic;
             flags_wr_en    : out std_logic;
+            debug_wr_en    : out std_logic;
 
             -- RESET
             banco_rst      : out std_logic := '0';
             acc_rst        : out std_logic := '0';
+            debug_rst      : out std_logic := '0';
 
             -- Controle PC
             pc_data_in     : out unsigned (6 downto 0);
@@ -139,10 +142,12 @@ architecture a_processador of processador is
     signal acc_wr_en      : std_logic;
     signal instr_wr_en    : std_logic;
     signal flags_wr_en    : std_logic;
+    signal debug_wr_en    : std_logic;
 
     -- RESET
     signal banco_rst      : std_logic;
     signal acc_rst        : std_logic;
+    signal debug_rst      : std_logic;
 
     -- PC
     signal pc_out         : unsigned (6 downto 0);
@@ -194,6 +199,9 @@ architecture a_processador of processador is
     signal ram_in         : unsigned (13 downto 0);
     signal ram_out        : unsigned (15 downto 0);
 
+    -- DEBUG
+    signal debug_out      : unsigned (15 downto 0);
+
     -- ACC
     signal acc_out        : unsigned (15 downto 0);
     ------------------------------------------------------------------------------
@@ -239,9 +247,9 @@ architecture a_processador of processador is
 
     uc_instance: uc
     port map(
-        clk     => clk, 
-        rst     => rst,       
-        instrucao => instrucao_out,     
+        clk          => clk, 
+        rst          => rst,       
+        instrucao    => instrucao_out,     
 
         -- WRITE ENABLE
         pc_wr_en     => pc_wr_en,      
@@ -250,28 +258,30 @@ architecture a_processador of processador is
         instr_wr_en  => instr_wr_en,  
         ram_wr_en    => ram_wr_en, 
         flags_wr_en  => flags_wr_en,
+        debug_wr_en  => debug_wr_en,
 
         -- RESET
-        banco_rst  =>  banco_rst,   
-        acc_rst => acc_rst,   
+        banco_rst    => banco_rst,   
+        acc_rst      => acc_rst,   
+        debug_rst    => debug_rst,
 
         -- Controle PC
-        pc_data_in  => pc_data_in,   
+        pc_data_in     => pc_data_in,   
         jump_or_branch => j_or_b,
 
         -- Controle ULA
-        ula_sel => ula_sel,        
-        imm =>  imm,          
-        reg_or_imm => reg_or_imm,
-        tipo_cmp => tipo_cmp,     
+        ula_sel      => ula_sel,        
+        imm          =>  imm,          
+        reg_or_imm   => reg_or_imm,
+        tipo_cmp     => tipo_cmp,     
 
         -- Controle Banco
-        rs2 => rs2_out, 
-        rd  => rd_out,    
+        rs2          => rs2_out, 
+        rd           => rd_out,    
         sel_mux_regs => sel_mux_regs,
 
         -- Controle Maquina Estados
-        estado  => estado_out       
+        estado       => estado_out       
     );
 
     acc_instance: reg16bits
@@ -333,6 +343,15 @@ architecture a_processador of processador is
         dado_out => ram_out
     );
 
+    debug_instance: reg16bits
+    port map( 
+        clk      => clk,
+        rst      => debug_rst,
+        wr_en    => debug_wr_en,
+        data_in  => ram_out,        
+        data_out => debug_out
+    );
+
     mux_somador <=
         pc_out when j_or_b="01" else
         "0000000";
@@ -362,6 +381,8 @@ architecture a_processador of processador is
         rs2_data   when reg_or_imm = '0' else
         imm        when reg_or_imm = '1' else
         "0000000000000000"; 
+
+    bit_debug  <= '1' when debug_out /= "0000000000000000" else '0';
 
     estado     <= estado_out;
     saida_pc   <= pc_out;

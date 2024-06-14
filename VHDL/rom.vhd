@@ -77,8 +77,10 @@ architecture a_rom of rom is
         40 => B"00110_1111_0000_000", -- CMP    A, R0 -- Verifica se Finalizado é maior que 0
         41 => B"01100_0000_0001101" , -- JEQ    (13) -- BEQ (-25) 
 
+        -- Fim loop externo
+
         42 => B"00010_1111_0111_000", -- MOV    A, R7
-        43 => B"11101_0001_0000000" , -- LW     R1, 0(A)
+        43 => B"11101_0101_0000000" , -- LW     R5, 0(A)
         -- abaixo: casos omissos => (zero em todos os bits)
         others => (others=>'0')
     );

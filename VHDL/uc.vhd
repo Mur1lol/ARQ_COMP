@@ -16,10 +16,12 @@ entity uc is
         instr_wr_en    : out std_logic;
         ram_wr_en      : out std_logic;
         flags_wr_en    : out std_logic;
+        debug_wr_en    : out std_logic;
 
         -- RESET
         banco_rst      : out std_logic := '0';
         acc_rst        : out std_logic := '0';
+        debug_rst      : out std_logic := '0';
 
         -- Controle PC
         pc_data_in     : out unsigned (6 downto 0);
@@ -116,11 +118,10 @@ architecture a_uc of uc is
     rs2 <= 
         instrucao(10 downto  7) when saida_maquina="10" AND
         (opcode="11110" OR ((opcode="00011" OR opcode="00100") AND rs2_signal="1111"))
-    else
+        else
         instrucao(6  downto  3) when saida_maquina="10" AND 
         (opcode="00010" OR opcode="00011" OR 
-        opcode="00100" OR opcode="00110") 
-    ;
+        opcode="00100" OR opcode="00110");
 
     imm <= 
         (15 downto 7 => instrucao(6)) & instrucao(6  downto  0) when saida_maquina="10" AND
@@ -130,6 +131,8 @@ architecture a_uc of uc is
         (opcode="11111");
 
     ram_wr_en <= '1' when saida_maquina="10" AND opcode="11110" else '0';
+
+    debug_wr_en <= '1' when saida_maquina="10" AND opcode="11101" else '0';
     
     banco_wr_en   <= 
         '1' when saida_maquina="10" AND rd_signal /= "1111" AND 
@@ -146,7 +149,11 @@ architecture a_uc of uc is
         '1' when saida_maquina="10" AND 
         (opcode="00110" OR opcode="00111" OR opcode="00100" OR opcode="00101" OR opcode="00011") 
         else
-        '0';              
+        '0';   
+        
+    banco_rst  <= rst;
+    acc_rst    <= rst;
+    debug_rst  <= rst;
 
     -- Controle ULA
     ula_sel       <=

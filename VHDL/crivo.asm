@@ -56,12 +56,16 @@ MOV R6, A  -- Finalizado = 1
 
 MOV A, R2
 CMP A, R7 -- R2-R7 
-JNE (20) -- BNE (-16)
+JNE (22) -- BNE (-16)
 
 -- Fim loop interno
 
 MOV A, R6
 CMP A, R0 -- Verifica se Finalizado é maior que 0
-JEQ (11) -- BEQ (-25) 
+JEQ (13) -- BEQ (-25) 
 
 -- Fim loop externo
+
+MOV A, R7
+LW  R5, 0(A)
+
