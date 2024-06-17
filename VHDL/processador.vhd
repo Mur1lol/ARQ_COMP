@@ -160,7 +160,7 @@ architecture a_processador of processador is
     -- ROM
     signal rom_out        : unsigned (15 downto 0);
     
-    -- INSTRUÇÂO
+    -- INSTRUCAO
     signal instrucao_out  : unsigned (15 downto 0);
 
     -- UC
