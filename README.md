@@ -14,7 +14,7 @@ Este projeto foi desenvolvido como parte da disciplina de Arquitetura de Computa
 
 ## 📒 Descrição do Circuito
 
-![Processador](Processador.PNG)
+![Processador](Processador.png)
 
 A imagem apresentada ilustra a organização e a interação entre os principais componentes do processador:
 
