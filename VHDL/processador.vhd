@@ -84,13 +84,13 @@ architecture a_processador of processador is
             jump_or_branch : out unsigned (1 downto 0);
 
             -- Controle ULA
-            ula_sel        : out unsigned (1 downto 0);
-            imm            : out unsigned (15 downto 0);
-            reg_or_imm     : out std_logic;
-            tipo_cmp       : out unsigned (2 downto 0);
+            ula_sel        : out unsigned (1 downto 0)  := "00";
+            imm            : out unsigned (15 downto 0) := "0000000000000000";
+            reg_or_imm     : out std_logic              := '0';
+            tipo_cmp       : out unsigned (2 downto 0)  := "000";
 
             -- Controle Banco
-            rs2, rd        : out unsigned (3 downto 0);
+            rs2, rd        : out unsigned(3 downto 0) := "0000";
             sel_mux_regs   : out std_logic;
 
             -- Controle Maquina Estados
@@ -197,10 +197,10 @@ architecture a_processador of processador is
     -- RAM
     signal ram_wr_en      : std_logic;
     signal ram_in         : unsigned (13 downto 0);
-    signal ram_out        : unsigned (15 downto 0);
+    signal ram_out        : unsigned (15 downto 0) := "0000000000000000";
 
     -- DEBUG
-    signal debug_out      : unsigned (15 downto 0);
+    signal debug_out      : unsigned (15 downto 0) := "0000000000000000";
 
     -- ACC
     signal acc_out        : unsigned (15 downto 0);
@@ -382,7 +382,7 @@ architecture a_processador of processador is
         imm        when reg_or_imm = '1' else
         "0000000000000000"; 
 
-    bit_debug  <= '1' when debug_out /= "0000000000000000" else '0';
+    bit_debug  <= '0' when debug_out = "0000000000000000" else '1';
 
     estado     <= estado_out;
     saida_pc   <= pc_out;

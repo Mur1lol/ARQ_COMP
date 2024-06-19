@@ -45,18 +45,18 @@ MOV A, R2
 SW  R0, 0(A)    -- mem[R2] = R0
 
 CMP A, R7 -- R2-R7       
--- BLT (6) -- JLT (34)  -- Se menor, então pula
+BLT (6) -- JLT (34)  -- Se menor, então pula
 
 MOV A, R1
 CMP A, R3 -- R1-R3 
--- BLT (3) -- JLT (34)  -- Se menor, então pula
+BLT (3) -- JLT (34)  -- Se menor, então pula
 
 LI A, 1
 MOV R6, A  -- Finalizado = 1
 
 MOV A, R2
 CMP A, R7 -- R2-R7 
-JNE (22) -- BNE (-16)
+JLT (22) -- BLT (-16)
 
 -- Fim loop interno
 

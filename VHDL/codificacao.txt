@@ -1,36 +1,36 @@
 /-------------------------------------------\  /-----------------------------------------\
 | COMANDOS ASSEMBLY |        BINARIO        |  |                                         |
 |-------------------+-----------------------|  |-----------------------------------------|
-| NOP               |  00000_0000_0000_000  |  | dddd 	 : Registrador Destino           |
+| NOP               |  0000_0000_0000_0000  |  | dddd 	 : Registrador Destino           |
 |-------------------+-----------------------|  | ssss 	 : Registrador Fonte             |
-| LI   | acc | imm  |  00001_1111__ccccccc  |  | ccccccc : Constante em Complemento de 2 | 
-|-------------------+-----------------------|  |                                         |
-| MOV  | acc | reg  |  00010_dddd_ssss_xxx  |  | x   	 : Void                          |
-|-------------------+-----------------------|  \-----------------------------------------/ 
-| SUB  | acc | reg  |  00011_dddd_ssss_xxx  |  
-|-------------------+-----------------------|  /-----------------------------------------\
-| ADD  | acc | reg  |  00100_dddd_ssss_xxx  |  |               REGISTRADORES             |
-| ADDI | acc | imm  |  00101_1111__ccccccc  |  |-----------------------------------------|
-|-------------------+-----------------------|  | x0 : 0000          | x4 : 0100          |
-| CMP  | acc | reg  |  00110_dddd_ssss_xxx  |  | x1 : 0001          | x6 : 0101          |
-| CMPI | acc | imm  |  00111_1111__ccccccc  |  | x2 : 0010          | x6 : 0110          |
-|-------------------+-----------------------|  | x3 : 0011          | x7 : 0111          |
-| JUMP (ABSOLUTO)   |                       |  |-----------------------------------------|
-| JMP  | imm        |  01000_xxxx__ccccccc  |  | acc: 1111                               |
-| JLT  | imm        |  01001_xxxx__ccccccc  |  \-----------------------------------------/
-| JGT  | imm        |  01010_xxxx__ccccccc  |  
-| JNE  | imm        |  01011_xxxx__ccccccc  |   
-| JEQ  | imm        |  01100_xxxx__ccccccc  |   
+| LI   | acc | imm  |  0001_1111__cccccccc  |  | cccc    : Constante em Complemento de 2 |
+| LUI  | acc | imm  |  0010_1111__cccccccc  |  |                                         | 
+|-------------------+-----------------------|  | x   	 : Void                          |
+| MOV  | acc | reg  |  0011_dddd_ssss_xxxx  |  \-----------------------------------------/
+|-------------------+-----------------------|   
+| SUB  | acc | reg  |  0100_1111_ssss_xxxx  |  /-----------------------------------------\
+|-------------------+-----------------------|  |               REGISTRADORES             |
+| ADD  | acc | reg  |  0101_dddd_ssss_xxxx  |  |-----------------------------------------|
+| ADDI | acc | imm  |  0110_1111__cccccccc  |  | x0 : 0000          | x4 : 0100          |
+|-------------------+-----------------------|  | x1 : 0001          | x6 : 0101          |
+| CMP  | acc | reg  |  0111_1111_ssss_xxxx  |  | x2 : 0010          | x6 : 0110          |
+| CMPI | acc | imm  |  1000_1111__cccccccc  |  | x3 : 0011          | x7 : 0111          |
+|-------------------+-----------------------|  |-----------------------------------------|
+| JUMP (ABSOLUTO)   |                       |  | acc: 1111                               |
+| JMP  | imm        |  1001_0000_x_ccccccc  |  \-----------------------------------------/
+| JLT  | imm        |  1001_0001_x_ccccccc  |  
+| JGT  | imm        |  1001_0010_x_ccccccc  |  
+| JNE  | imm        |  1001_0011_x_ccccccc  |   
+| JEQ  | imm        |  1001_0100_x_ccccccc  |   
 |-------------------+-----------------------|  
 | BRANCH (RELATIVO) |                       |
-| BR   | imm        |  11000_xxxx__ccccccc  |
-| BLT  | imm        |  11001_xxxx__ccccccc  |
-| BGT  | imm        |  11010_xxxx__ccccccc  |
-| BNE  | imm        |  11011_xxxx__ccccccc  |
-| BEQ  | imm        |  11100_xxxx__ccccccc  |
+| BR   | imm        |  1010_0000_x_ccccccc  |
+| BLT  | imm        |  1010_0001_x_ccccccc  |
+| BGT  | imm        |  1010_0010_x_ccccccc  |
+| BNE  | imm        |  1010_0011_x_ccccccc  |
+| BEQ  | imm        |  1010_0100_x_ccccccc  |
 |-------------------+-----------------------| 
-| LW   | reg | imm  |  11101_dddd__ccccccc  |
-| SW   | reg | imm  |  11110_ssss__ccccccc  |
-|-------------------+-----------------------| 
-| LUI  | acc | imm  |  11111_dddd__ccccccc  |
+| LW   | reg | imm  |  1011_dddd__cccccccc  |
+| SW   | reg | imm  |  1100_ssss__cccccccc  |
 \-------------------------------------------/
+
