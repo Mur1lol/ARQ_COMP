@@ -22,6 +22,8 @@
 | JGT  | imm        |  1001_0010_x_ccccccc  | Pula se a comparação for maior                            |
 | JNE  | imm        |  1001_0011_x_ccccccc  | Pula se a comparação for diferente                        |
 | JEQ  | imm        |  1001_0100_x_ccccccc  | Pula se a comparação for igual                            |
+| BNO  | imm        |  1001_0101_x_ccccccc  | Pula se a comparação não tiver Overflow                   |
+| BOF  | imm        |  1001_0110_x_ccccccc  | Pula se a comparação tiver Overflow                       |
 |-------------------+-----------------------+-----------------------------------------------------------|
 | BRANCH (RELATIVO) |                       |                                                           |
 | BR   | imm        |  1010_0000_x_ccccccc  | Pula sem precisar de comparação                           |
@@ -29,6 +31,8 @@
 | BGT  | imm        |  1010_0010_x_ccccccc  | Pula se a comparação for maior                            |
 | BNE  | imm        |  1010_0011_x_ccccccc  | Pula se a comparação for diferente                        |
 | BEQ  | imm        |  1010_0100_x_ccccccc  | Pula se a comparação for igual                            |
+| BNO  | imm        |  1010_0101_x_ccccccc  | Pula se a comparação não tiver Overflow                   |
+| BOF  | imm        |  1010_0110_x_ccccccc  | Pula se a comparação tiver Overflow                       |
 |-------------------+-----------------------+-----------------------------------------------------------|
 | LW   | reg | imm  |  1011_dddd__cccccccc  | Carrega o valor do endereço (imm + A) no registrador      |
 | SW   | reg | imm  |  1100_ssss__cccccccc  | Carrega o valor do registrador no endereço (imm + A)      |

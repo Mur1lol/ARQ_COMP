@@ -21,7 +21,9 @@
 | JLT  | imm        |  1001_0001_x_ccccccc  |  
 | JGT  | imm        |  1001_0010_x_ccccccc  |  
 | JNE  | imm        |  1001_0011_x_ccccccc  |   
-| JEQ  | imm        |  1001_0100_x_ccccccc  |   
+| JEQ  | imm        |  1001_0100_x_ccccccc  | 
+| JNO  | imm        |  1001_0101_x_ccccccc  |   
+| JOF  | imm        |  1001_0110_x_ccccccc  |   
 |-------------------+-----------------------|  
 | BRANCH (RELATIVO) |                       |
 | BR   | imm        |  1010_0000_x_ccccccc  |
@@ -29,6 +31,8 @@
 | BGT  | imm        |  1010_0010_x_ccccccc  |
 | BNE  | imm        |  1010_0011_x_ccccccc  |
 | BEQ  | imm        |  1010_0100_x_ccccccc  |
+| BNO  | imm        |  1010_0101_x_ccccccc  |   
+| BOF  | imm        |  1010_0110_x_ccccccc  |  
 |-------------------+-----------------------| 
 | LW   | reg | imm  |  1011_dddd__cccccccc  |
 | SW   | reg | imm  |  1100_ssss__cccccccc  |

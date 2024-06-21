@@ -5,14 +5,14 @@ use ieee.numeric_std.all;
 entity processador is
     port (  
         clk, rst    : in  std_logic;
-        estado      : out unsigned (1 downto 0);
-        saida_PC    : out unsigned (6 downto 0);
-        reg_instr   : out unsigned (15 downto 0);
-        saida_rs1   : out unsigned (15 downto 0);
-        saida_rs2   : out unsigned (15 downto 0);
-        saida_acc   : out unsigned (15 downto 0);
-        saida_ula   : out unsigned (15 downto 0);
-        bit_debug   : out std_logic
+        estado      : out unsigned (1  downto 0) := "00";
+        saida_PC    : out unsigned (6  downto 0) := "0000000";
+        reg_instr   : out unsigned (15 downto 0) := "0000000000000000";
+        saida_rs1   : out unsigned (15 downto 0) := "0000000000000000";
+        saida_rs2   : out unsigned (15 downto 0) := "0000000000000000";
+        saida_acc   : out unsigned (15 downto 0) := "0000000000000000";
+        saida_ula   : out unsigned (15 downto 0) := "0000000000000000";
+        bit_debug   : out std_logic := '0'
     );
 end entity;
 
@@ -358,13 +358,15 @@ architecture a_processador of processador is
 
     pc_sel <= 
         '1' when (j_or_b="01" OR j_or_b="10") AND
-                 (
-                    (tipo_cmp = "000" AND negative_out='1') OR  -- MENOR
-                    (tipo_cmp = "001" AND negative_out='0') OR  -- MAIOR
-                    (tipo_cmp = "010" AND zero_out='0') OR   -- DIFF
-                    (tipo_cmp = "011" AND zero_out='1') OR  -- IGUAL
-                    (tipo_cmp = "100")
-                 ) else
+            (
+                (tipo_cmp = "001" AND negative_out='1') OR  -- MENOR
+                (tipo_cmp = "010" AND negative_out='0') OR  -- MAIOR
+                (tipo_cmp = "011" AND zero_out='0') OR   -- DIFF
+                (tipo_cmp = "100" AND zero_out='1') OR  -- IGUAL
+                (tipo_cmp = "101" AND overflow_out='0') OR  -- SEM OVERFLOW
+                (tipo_cmp = "110" AND overflow_out='1') OR  -- COM OVERFLOW
+                (tipo_cmp = "000")
+            ) else
         '0';
 
     mux_pc <= 

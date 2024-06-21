@@ -14,7 +14,7 @@ architecture a_rom of rom is
     constant conteudo_rom : mem := (
         -- caso endereco => conteudo        
 
-        0  => B"0010_1111_00111100" , -- LUI    A, 15360
+        0  => B"0010_1111_00111100" , -- LUI    A, 15360 (00111100)
         1  => B"0110_1111_11000100" , -- ADDI   A, -60
         2  => B"0110_1111_11000011" , -- ADDI   A, -61
 
@@ -82,6 +82,10 @@ architecture a_rom of rom is
 
         42 => B"0011_1111_0111_0000", -- MOV    A, R7
         43 => B"1011_0101_00000000" , -- LW     R5, 0(A)
+
+        44 => B"0010_1111_00100000" , -- LUI A, 8192 (00100000)
+        45 => B"0101_0111_1111_0000", -- ADD R7, A
+        46 => B"1010_0101_0_1111111", -- BNO -1
         -- abaixo: casos omissos => (zero em todos os bits)
         others => (others=>'0')
     );

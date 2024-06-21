@@ -53,7 +53,6 @@ architecture a_uc of uc is
     
     signal saida_maquina : unsigned (1 downto 0) := "00";
     signal opcode        : unsigned (3 downto 0) := "0000";
-    signal cmp           : unsigned (3 downto 0) := "0000";
     signal j_or_b_signal : unsigned (1 downto 0) := "00";
     signal rd_signal     : unsigned (3 downto 0) := "0000";
     signal rs2_signal    : unsigned (3 downto 0) := "0000";
@@ -71,10 +70,9 @@ architecture a_uc of uc is
     -- Fetch
     instr_wr_en <= '1' when saida_maquina="00" else '0';
     
-
+    
     -- Decode
     opcode         <= instrucao(15 downto 12) when saida_maquina="01";
-    cmp            <= instrucao(11 downto  8) when saida_maquina="01";
 
     j_or_b_signal  <=
         -- BRANCH
@@ -88,19 +86,16 @@ architecture a_uc of uc is
 
     pc_wr_en     <= '1' when saida_maquina="01" else '0'; -- Atualiza o PC na execução
     
-    pc_data_in   <= instrucao(6 downto 0) when saida_maquina="01"AND (j_or_b_signal="01" OR j_or_b_signal="10") else "0000000";
+    pc_data_in   <= instrucao(6  downto 0) when saida_maquina="01" AND (j_or_b_signal="01" OR j_or_b_signal="10") else "0000000";
 
-    tipo_cmp     <= 
-        -- MENOR
-        "000" when saida_maquina="01" AND (cmp="0001") else
-        -- MAIOR
-        "001" when saida_maquina="01" AND (cmp="0010") else
-        -- DIFERENTE
-        "010" when saida_maquina="01" AND (cmp="0011") else
-        -- IGUAL
-        "011" when saida_maquina="01" AND (cmp="0100") else
-        -- SEM CMP
-        "100" when saida_maquina="01" AND (cmp="0000");
+    tipo_cmp     <= instrucao(10 downto 8) when saida_maquina="01" AND (j_or_b_signal="01" OR j_or_b_signal="10");
+    -- MENOR: "001" 
+    -- MAIOR: "010" 
+    -- DIFERENTE: "011" 
+    -- IGUAL: "100" 
+    -- SEM OVERFLOW: "101" 
+    -- COM OVERFLOW: "110"
+    -- SEM CMP : "000"
 
     reg_or_imm    <=
         -- Imediato

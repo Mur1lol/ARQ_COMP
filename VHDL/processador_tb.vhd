@@ -8,15 +8,15 @@ end;
 architecture a_processador_tb of processador_tb is
     component processador
         port(    
-            clk, rst     : in  std_logic;
-            estado       : out unsigned (1 downto 0);
-            saida_PC     : out unsigned (6 downto 0);
-            reg_instr    : out unsigned (15 downto 0);
-            saida_rs1    : out unsigned (15 downto 0);
-            saida_rs2    : out unsigned (15 downto 0);
-            saida_acc    : out unsigned (15 downto 0);
-            saida_ula    : out unsigned (15 downto 0);
-            bit_debug    : out std_logic
+            clk, rst    : in  std_logic;
+            estado      : out unsigned (1  downto 0) := "00";
+            saida_PC    : out unsigned (6  downto 0) := "0000000";
+            reg_instr   : out unsigned (15 downto 0) := "0000000000000000";
+            saida_rs1   : out unsigned (15 downto 0) := "0000000000000000";
+            saida_rs2   : out unsigned (15 downto 0) := "0000000000000000";
+            saida_acc   : out unsigned (15 downto 0) := "0000000000000000";
+            saida_ula   : out unsigned (15 downto 0) := "0000000000000000";
+            bit_debug   : out std_logic := '0'
         );
     end component;
 
@@ -43,7 +43,7 @@ architecture a_processador_tb of processador_tb is
         -- wait for 50000000 ns;
         -- wait for 37522400 ns;
         -- wait for 25014965 ns;
-        wait for 12504885 ns;
+        wait for 12505200 ns;
         finished <= '1';	
         wait;
     end process sim_time_proc;
@@ -59,35 +59,4 @@ architecture a_processador_tb of processador_tb is
         wait;
     end process clk_proc;
 
-    
-end architecture a_processador_tb;
-
--- ghdl  -a  pc.vhd
--- ghdl  -e  pc
-
--- ghdl  -a  add1.vhd
--- ghdl  -e  add1
-
--- ghdl  -a  rom.vhd
--- ghdl  -e  rom
-
--- ghdl  -a  reg16bits.vhd
--- ghdl  -e  reg16bits
-
--- ghdl  -a  uc.vhd
--- ghdl  -e  uc
-
--- ghdl  -a  banco.vhd
--- ghdl  -e  banco
-
--- ghdl  -a  ula.vhd
--- ghdl  -e  ula
-
--- ghdl  -a  processador.vhd
--- ghdl  -e  processador
-
--- ghdl  -a  processador_tb.vhd
--- ghdl  -e  processador_tb
--- ghdl  -r  processador_tb  --wave=processador_tb.ghw
-
--- gtkwave processador_tb.ghw		
+end architecture a_processador_tb;	

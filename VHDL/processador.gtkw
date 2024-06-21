@@ -1,21 +1,21 @@
 [*]
 [*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
-[*] Wed Jun 19 02:21:06 2024
+[*] Fri Jun 21 00:35:58 2024
 [*]
 [dumpfile] "D:\ARQ_COMP\VHDL\processador_tb.ghw"
-[dumpfile_mtime] "Wed Jun 19 02:09:30 2024"
-[dumpfile_size] 165792750
+[dumpfile_mtime] "Fri Jun 21 00:30:17 2024"
+[dumpfile_size] 163792505
 [savefile] "D:\ARQ_COMP\VHDL\processador.gtkw"
-[timestart] 0
+[timestart] 12504360000000
 [size] 1920 1017
-[pos] -243 -243
-*-40.701233 12504635200000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -165 -165
+*-26.701233 12505055000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.processador_tb.
-[sst_width] 197
+[sst_width] 42
 [signals_width] 272
-[sst_expanded] 1
-[sst_vpaned_height] 633
+[sst_expanded] 0
+[sst_vpaned_height] 739
 @28
 #{top.processador_tb.uut.estado[1:0]} top.processador_tb.uut.estado[1] top.processador_tb.uut.estado[0]
 @200
@@ -81,10 +81,10 @@ top.processador_tb.uut.banco_wr_en
 -
 -FLAGS
 @28
-top.processador_tb.uut.ula_instance.zero
-top.processador_tb.uut.ula_instance.negative
-top.processador_tb.uut.ula_instance.carry
-top.processador_tb.uut.ula_instance.overflow
+top.processador_tb.uut.flags_instance.zero_out
+top.processador_tb.uut.flags_instance.negative_out
+top.processador_tb.uut.flags_instance.carry_out
+top.processador_tb.uut.flags_instance.overflow_out
 @200
 -
 @28
